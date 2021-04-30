@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="description" content="Homepage ">
+    
+    <meta name="author" content="Group A">
+  
+    <title>intellekt - Test</title>
+  
+  <!-- Mobile Specific Meta
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="images/tab-icon.png" />
+    <style>
+      * {box-sizing: border-box;}
+      
+      body { 
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      
+      .header {
+        overflow: hidden;
+        background-image: url('images/slider/slider-bg-2.jpg');
+        background-repeat: no-repeat;
+        padding: 20px 10px;
+      }
+      
+      .header img {
+        float: left;
+        color: black;
+        text-align: center;
+        padding: 10px;
+        text-decoration: none;
+        font-size: 18px; 
+        line-height: 25px;
+        border-radius: 4px;
+        padding-left: 20px;
+      }
+      </style>
+</head>
+
+<body onload="whenloaded()">
+    <div class="header">
+        <img class="logo-default" src="images/logo-intellect.png" alt="logo"/>
+    </div>
+
+    <script>
+        function tmpmouse(e){
+            MouseX = (e.clientX-my_canvas.getBoundingClientRect().left)*800/my_canvas.getBoundingClientRect().width;
+            MouseY=(e.clientY-my_canvas.getBoundingClientRect().top)*600/my_canvas.getBoundingClientRect().height; 
+            if(MouseX>175 && MouseX<625 && MouseY>125 && MouseY<475){
+                window.removeEventListener('mousedown', tmpmouse, false);main();
+            }
+        }
+
+        function whenloaded(){
+            tmp1 = document.getElementById('exp');
+            tmp2 = tmp1.getContext('2d');
+            tmp2.fillStyle='#51A9AB';
+            tmp2.fillRect(175,125,450,350);
+            tmp2.fillStyle='white'; 
+            tmp2.font='24px Arial'; 
+            tmp2.textAlign='center'; 
+            tmp2.fillText('Click to start',400,300); 
+            window.addEventListener('mousedown', tmpmouse, false)
+            var canvasbox=document.getElementById('cbox');
+            iswebkit=RegExp('webkit').test(navigator.userAgent.toLowerCase());
+            canvasbox.addEventListener(iswebkit?'webkitfullscreenchange':'fullscreenchange', (event) => {if(document.fullscreenElement==null){my_screen_scale(0,false);}})
+        }
+    </script>
+    
+    <center>
+        <div id='cbox' style='overflow:hidden;margin-top:5px; width:800px;height:600px;border:0px solid black;background-color:black;display:flex;justify-content:center;align-items:center'>
+            <canvas tabindex='1' id="exp" width="800" height="600" style="display:flex;justify-content:center;align-items:center;outline:none;display: block;background-color:black;border:none;padding:0;margin:0;"></canvas>
+        </div>
+
+        <div style='display:flex;justify-content:left;width:800px;background-color:black;border:0px solid black;'>
+            <button type='button' style='background-color:black;color:white;border:none;padding:0;font-size:100%;font-family:inherit' title='fullscreen' onclick='my_fullscreen(document.getElementById("cbox"));my_screen_scale(0,true);'>&nbsp;&#x26F6;</button>
+        </div>
+    </center>
+
+    <script>
+        var click_to_start_text = "Click to start";
+
+        tmp1 = document.getElementById('exp');
+        tmp2 = tmp1.getContext('2d');
+        tmp2.fillStyle='grey';
+        tmp2.fillRect(175,125,450,350);
+        tmp2.fillStyle='blue';
+        tmp2.font='24px Arial';
+        tmp2.textAlign='center';
+        tmp2.fillText('Wait a second ...',400,300);
+    </script>
+
+    <script src="js/nback-script.js"> </script>
+<div id='showdata'></div>
+
+</body>
+</html>
