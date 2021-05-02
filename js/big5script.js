@@ -1,9 +1,4 @@
-// A personality quiz
-
-// This is an array of objects that stores the personality trait that is prompted to the user and the weight for each prompt. 
-// If a personality trait is considered more introverted, it will have a negative weight.
-// If a personlity trait is considered more extroverted, it will have a positive weight.
-
+// questions taken from IPIP inventory
 var prompts_o = [
     {
         prompt: 'Am the life of the party.',
@@ -304,15 +299,12 @@ var prompts_o = [
         weight: -1,
         class: 'group49',
         trait: 4
-    }
-
-    
+    }    
 ]
 
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
   
-    // While there remain elements to shuffle...
     while (0 !== currentIndex) {
   
       // Pick a remaining element...
@@ -331,6 +323,7 @@ function shuffle(array) {
 var prompts = shuffle(prompts_o)
     // This array stores all of the possible values and the weight associated with the value. 
     // The stronger agreeance/disagreeance, the higher the weight on the user's answer to the prompt.
+    // If the weight of a question is negative for some trait, then the weight of their answer gets inverted
 var prompt_values = [
     {
         value: 'Strongly Agree', 
@@ -381,112 +374,107 @@ function createPromptItems() {
     }
 }
     
-    function createValueButtons() {
-        for (var li_index = 0; li_index < prompts.length; li_index++) {
-            var group = document.createElement('div');
-            group.className = 'btn-group btn-group-justified';
+function createValueButtons() {
+    for (var li_index = 0; li_index < prompts.length; li_index++) {
+        var group = document.createElement('div');
+        group.className = 'btn-group btn-group-justified';
     
-            for (var i = 0; i < prompt_values.length; i++) {
-                var btn_group = document.createElement('div');
-                btn_group.className = 'btn-group';
+        for (var i = 0; i < prompt_values.length; i++) {
+            var btn_group = document.createElement('div');
+            btn_group.className = 'btn-group';
     
-                var button = document.createElement('button');
-                var button_text = document.createTextNode(prompt_values[i].value);
-                button.className = prompts[li_index].class + ' trait ' + prompts[li_index].trait + ' value-btn btn ' + prompt_values[i].class;     //group trait number
-                button.appendChild(button_text);
+            var button = document.createElement('button');
+            var button_text = document.createTextNode(prompt_values[i].value);
+            button.className = prompts[li_index].class + ' trait ' + prompts[li_index].trait + ' value-btn btn ' + prompt_values[i].class;     //group trait number
+            button.appendChild(button_text);
     
-                btn_group.appendChild(button);
-                group.appendChild(btn_group);
+            btn_group.appendChild(button);
+            group.appendChild(btn_group);
     
-                document.getElementsByClassName('prompt')[li_index].appendChild(group);
-            }
+            document.getElementsByClassName('prompt')[li_index].appendChild(group);
         }
     }
+}
     
-    createPromptItems();
-    createValueButtons();
+createPromptItems();
+createValueButtons();
     
     // Keep a running total of the values they have selected. If the total is negative, the user is introverted. If positive, user is extroverted.
     // Calculation will sum all of the answers to the prompts using weight of the value * the weight of the prompt.
-    var total = 0;
+var total = 0;
 
-    var extra1 = 0, agree2 = 0, consc3 = 0, stabl4 = 0, imagin5 = 0;
-    var scores = [0, 0, 0, 0, 0];
+var extra1 = 0, agree2 = 0, consc3 = 0, stabl4 = 0, imagin5 = 0;
+var scores = [0, 0, 0, 0, 0];
     
     // Get the weight associated to group number
-    function findPromptWeight(prompts, group) {
-        var weight = 0;
+function findPromptWeight(prompts, group) {
+    var weight = 0;
     
-        for (var i = 0; i < prompts.length; i++) {
-            if (prompts[i].class === group) {
-                weight = prompts[i].weight;
-            }
+    for (var i = 0; i < prompts.length; i++) {
+        if (prompts[i].class === group) {
+            weight = prompts[i].weight;
         }
-    
-        return weight;
     }
+    
+    return weight;
+}
     
     // Get the weight associated to the value
-    function findValueWeight(values, value, prompts, group) {
-        var weight = 0;
-        var promptWeight = findPromptWeight(prompts, group);
+function findValueWeight(values, value, prompts, group) {
+    var weight = 0;
+    var promptWeight = findPromptWeight(prompts, group);
         // console.log(group);
-        for (var i = 0; i < values.length; i++) {
-            if (values[i].value === value) {
-                if(promptWeight == 1)
-                    weight = values[i].posweight;
-                else if (promptWeight == -1)
-                    weight = values[i].negweight;
-            }
+    for (var i = 0; i < values.length; i++) {
+        if (values[i].value === value) {
+            if(promptWeight == 1)
+                weight = values[i].posweight;
+            else if (promptWeight == -1)
+                weight = values[i].negweight;
         }
-    
-        return weight;
     }
     
+    return weight;
+}
+    
     // When user clicks a value to agree/disagree with the prompt, display to the user what they selected
-    $('.value-btn').mousedown(function () {
-        var classList = $(this).attr('class');
+$('.value-btn').mousedown(function () {
+    var classList = $(this).attr('class');
         // console.log(classList);
-        var classArr = classList.split(" ");
+    var classArr = classList.split(" ");
         // console.log(classArr);
-        var this_group = classArr[0];           //revert to classArr[0]
+    var this_group = classArr[0];           //revert to classArr[0]
         // console.log(this_group);
-        var this_trait = classArr[2];
+    var this_trait = classArr[2];
     
         // If button is already selected, de-select it when clicked and subtract any previously added values to the total
         // Otherwise, de-select any selected buttons in group and select the one just clicked
         // And subtract deselected weighted value and add the newly selected weighted value to the total
-        if($(this).hasClass('active')) {
-            $(this).removeClass('active');
-            scores[this_trait] -= findValueWeight(prompt_values, $(this).text(), prompts, this_group);
-        } else {
-            // $('[class='thisgroup).prop('checked', false);
-            scores[this_trait] -= findValueWeight(prompt_values, $('.'+this_group+'.active').text(), prompts, this_group);
-            // console.log($('.'+this_group+'.active').text());
-            $('.'+this_group).removeClass('active');
+    if($(this).hasClass('active')) {
+        $(this).removeClass('active');
+        scores[this_trait] -= findValueWeight(prompt_values, $(this).text(), prompts, this_group);
+    } else {
+        scores[this_trait] -= findValueWeight(prompt_values, $('.'+this_group+'.active').text(), prompts, this_group);
+        $('.'+this_group).removeClass('active');
     
-            // console.log('group' + findValueWeight(prompt_values, $('.'+this_group).text()));
-            // $(this).prop('checked', true);
-            $(this).addClass('active');
-            scores[this_trait] += findValueWeight(prompt_values, $(this).text(), prompts, this_group);
-        }
+        $(this).addClass('active');
+        scores[this_trait] += findValueWeight(prompt_values, $(this).text(), prompts, this_group);
+    }
     
-        console.log(scores);
-    })
+    console.log(scores);
+})
+        
+$('#submit-btn').click(function () {
+    localStorage.clear();
+    localStorage.setItem("global_array", JSON.stringify(scores));
+    var x = localStorage.getItem("global_array");
+    console.log(x);
+})
     
+$('#retake-btn').click(function () {
+    $('#quiz').removeClass('hide');
+    $('#submit-btn').removeClass('hide');
+    $('#retake-btn').addClass('hide');
     
-    
-    $('#submit-btn').click(function () {
-        localStorage.setItem("global_array", JSON.stringify(scores));
-        var x = localStorage.getItem("global_array");
-        console.log(x);
-    })
-    
-    $('#retake-btn').click(function () {
-        $('#quiz').removeClass('hide');
-        $('#submit-btn').removeClass('hide');
-        $('#retake-btn').addClass('hide');
-    
-        $('.results').addClass('hide');
-        $('.results').removeClass('show');
-    })
+    $('.results').addClass('hide');
+    $('.results').removeClass('show');
+})
