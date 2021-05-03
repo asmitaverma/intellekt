@@ -346,16 +346,11 @@ $jscomp.polyfill("Object.assign", function (a) { return a || $jscomp.assign }, "
         }
         function my_delete_last_stimulus() { 1 == my_stimuli1[my_stimuli1_end - 1].on && my_stimuli1_n--; my_stimuli1_end--; return my_stimuli1_end } function my_copy_stimulus(a) { tmp = 0 > a ? my_stimuli1_end + a : a - 1; my_stimuli1[my_stimuli1_end] = Object.assign({}, my_stimuli1[tmp]); 1 == my_stimuli1[my_stimuli1_end].on && my_stimuli1_n++; my_stimuli1_end++; return my_stimuli1_end }
         function my_substr(a, b, c) { return 0 == a.length ? "" : void 0 == c ? 0 > b ? (b = a.length + b, 0 < b ? a[b] : a[0]) : b <= a.length ? a[b - 1] : a[a.length - 1] : a.substring(0 > b ? a.length + b : b - 1, 0 > c ? a.length + c + 1 : c) } function formatoutputdata(a) { tmp = a.split(/\r?\n/); out = ""; for (i = 0; i < tmp.length - 1; i++) { tmp2 = tmp[i].split(/\s+/); out += "<tr>"; for (j = 0; j < tmp2.length; j++)out = out + "<td>" + tmp2[j] + "</td>"; out += "</tr>" } return out }
-        // function showdata_html() { 
-        //     var a = document.createElement("BUTTON"), b = document.createTextNode("Show data"); 
-        //     a.appendChild(b); 
-        //     a.setAttribute("onclick", 'showdata.innerHTML = "<table border=1>" + formatoutputdata(outputdata) + "</table>";'); 
-        //     document.body.appendChild(a) 
-        // } 
+        
         function showdata_html() { 
             var a = document.createElement("BUTTON"), b = document.createTextNode("Next Test"); 
             a.appendChild(b); 
-            a.setAttribute("onclick", "window.location.href='nonveebs_temp.html'"); 
+            a.setAttribute("onclick", "window.location.href='nonverbal.html'"); 
             document.body.appendChild(a) 
         } 
         var intro = 1, finalwords = 2, left = 3, right = 4, fix = 5, mistake = 6, arial = 1, RTCon = 0, RTInc = 0, RTSimon = 0, my_startbutton_text = "Click to start", general_trial_counter = 0, selectedoncecount_table_simontasktable = 0;

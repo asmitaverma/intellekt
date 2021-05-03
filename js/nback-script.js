@@ -17,6 +17,7 @@ $jscomp.ASSUME_NO_NATIVE_MAP=!1;
 $jscomp.ASSUME_NO_NATIVE_SET=!1;
 $jscomp.SIMPLE_FROUND_POLYFILL=!1;
 $jscomp.ISOLATE_POLYFILLS=!1;
+
 $jscomp.defineProperty=$jscomp.ASSUME_ES5||"function"==typeof Object.defineProperties?Object.defineProperty:function(a,b,c){
     if(a==Array.prototype||a==Object.prototype)
         return a;
@@ -45,84 +46,729 @@ var $jscomp$lookupPolyfilledValue=function(a,b){
     return void 0!==c?c:a[b]};$jscomp.polyfill=function(a,b,c,d){
         b&&($jscomp.ISOLATE_POLYFILLS?$jscomp.polyfillIsolated(a,b,c,d):$jscomp.polyfillUnisolated(a,b,c,d))
     };
-$jscomp.polyfillUnisolated=function(a,b,c,d){c=$jscomp.global;a=a.split(".");for(d=0;d<a.length-1;d++){var e=a[d];e in c||(c[e]={});c=c[e]}a=a[a.length-1];d=c[a];b=b(d);b!=d&&null!=b&&$jscomp.defineProperty(c,a,{configurable:!0,writable:!0,value:b})};
-$jscomp.polyfillIsolated=function(a,b,c,d){var e=a.split(".");a=1===e.length;d=e[0];d=!a&&d in $jscomp.polyfills?$jscomp.polyfills:$jscomp.global;for(var f=0;f<e.length-1;f++){var g=e[f];g in d||(d[g]={});d=d[g]}e=e[e.length-1];c=$jscomp.IS_SYMBOL_NATIVE&&"es6"===c?d[e]:null;b=b(c);null!=b&&(a?$jscomp.defineProperty($jscomp.polyfills,e,{configurable:!0,writable:!0,value:b}):b!==c&&($jscomp.propertyToPolyfillSymbol[e]=$jscomp.IS_SYMBOL_NATIVE?$jscomp.global.Symbol(e):$jscomp.POLYFILL_PREFIX+e,e=$jscomp.propertyToPolyfillSymbol[e],
-$jscomp.defineProperty(d,e,{configurable:!0,writable:!0,value:b})))};$jscomp.polyfill("Object.assign",function(a){return a||$jscomp.assign},"es6","es3");
-$jscomp.polyfill("Array.from",function(a){return a?a:function(a,c,d){c=null!=c?c:function(a){return a};var b=[],f="undefined"!=typeof Symbol&&Symbol.iterator&&a[Symbol.iterator];if("function"==typeof f){a=f.call(a);for(var g=0;!(f=a.next()).done;)b.push(c.call(d,f.value,g++))}else for(f=a.length,g=0;g<f;g++)b.push(c.call(d,a[g],g));return b}},"es6","es3");$jscomp.arrayIteratorImpl=function(a){var b=0;return function(){return b<a.length?{done:!1,value:a[b++]}:{done:!0}}};$jscomp.arrayIterator=function(a){return{next:$jscomp.arrayIteratorImpl(a)}};
-$jscomp.SYMBOL_PREFIX="jscomp_symbol_";$jscomp.initSymbol=function(){$jscomp.initSymbol=function(){};$jscomp.global.Symbol||($jscomp.global.Symbol=$jscomp.Symbol)};$jscomp.SymbolClass=function(a,b){this.$jscomp$symbol$id_=a;$jscomp.defineProperty(this,"description",{configurable:!0,writable:!0,value:b})};$jscomp.SymbolClass.prototype.toString=function(){return this.$jscomp$symbol$id_};
-$jscomp.Symbol=function(){function a(c){if(this instanceof a)throw new TypeError("Symbol is not a constructor");return new $jscomp.SymbolClass($jscomp.SYMBOL_PREFIX+(c||"")+"_"+b++,c)}var b=0;return a}();
-$jscomp.initSymbolIterator=function(){$jscomp.initSymbol();var a=$jscomp.global.Symbol.iterator;a||(a=$jscomp.global.Symbol.iterator=$jscomp.global.Symbol("Symbol.iterator"));"function"!=typeof Array.prototype[a]&&$jscomp.defineProperty(Array.prototype,a,{configurable:!0,writable:!0,value:function(){return $jscomp.iteratorPrototype($jscomp.arrayIteratorImpl(this))}});$jscomp.initSymbolIterator=function(){}};
-$jscomp.initSymbolAsyncIterator=function(){$jscomp.initSymbol();var a=$jscomp.global.Symbol.asyncIterator;a||(a=$jscomp.global.Symbol.asyncIterator=$jscomp.global.Symbol("Symbol.asyncIterator"));$jscomp.initSymbolAsyncIterator=function(){}};$jscomp.iteratorPrototype=function(a){$jscomp.initSymbolIterator();a={next:a};a[$jscomp.global.Symbol.iterator]=function(){return this};return a};
-$jscomp.iteratorFromArray=function(a,b){$jscomp.initSymbolIterator();a instanceof String&&(a+="");var c=0,d={next:function(){if(c<a.length){var e=c++;return{value:b(e,a[e]),done:!1}}d.next=function(){return{done:!0,value:void 0}};return d.next()}};d[Symbol.iterator]=function(){return d};return d};$jscomp.polyfill("Array.prototype.keys",function(a){return a?a:function(){return $jscomp.iteratorFromArray(this,function(a){return a})}},"es6","es3");
-$jscomp.polyfill("Number.isFinite",function(a){return a?a:function(a){return"number"!==typeof a?!1:!isNaN(a)&&Infinity!==a&&-Infinity!==a}},"es6","es3");$jscomp.polyfill("Array.prototype.fill",function(a){return a?a:function(a,c,d){var b=this.length||0;0>c&&(c=Math.max(0,b+c));if(null==d||d>b)d=b;d=Number(d);0>d&&(d=Math.max(0,b+d));for(c=Number(c||0);c<d;c++)this[c]=a;return this}},"es6","es3");
-$jscomp.polyfill("Object.is",function(a){return a?a:function(a,c){return a===c?0!==a||1/a===1/c:a!==a&&c!==c}},"es6","es3");$jscomp.polyfill("Array.prototype.includes",function(a){return a?a:function(a,c){var b=this;b instanceof String&&(b=String(b));var e=b.length;c=c||0;for(0>c&&(c=Math.max(c+e,0));c<e;c++){var f=b[c];if(f===a||Object.is(f,a))return!0}return!1}},"es7","es3");
-$jscomp.checkStringArgs=function(a,b,c){if(null==a)throw new TypeError("The 'this' value for String.prototype."+c+" must not be null or undefined");if(b instanceof RegExp)throw new TypeError("First argument to String.prototype."+c+" must not be a regular expression");return a+""};$jscomp.polyfill("String.prototype.includes",function(a){return a?a:function(a,c){return-1!==$jscomp.checkStringArgs(this,a,"includes").indexOf(a,c||0)}},"es6","es3");
-$jscomp.polyfill("Array.prototype.flat",function(a){return a?a:function(a){a=void 0===a?1:a;for(var b=[],d=0;d<this.length;d++){var e=this[d];Array.isArray(e)&&0<a?(e=Array.prototype.flat.call(e,a-1),b.push.apply(b,e)):b.push(e)}return b}},"es9","es5");$jscomp.polyfill("Math.trunc",function(a){return a?a:function(a){a=Number(a);if(isNaN(a)||Infinity===a||-Infinity===a||0===a)return a;var b=Math.floor(Math.abs(a));return 0>a?-b:b}},"es6","es3");
+$jscomp.polyfillUnisolated=function(a,b,c,d){
+    c=$jscomp.global;
+    a=a.split(".");
+    for(d=0;d<a.length-1;d++){
+        var e=a[d];
+        e in c||(c[e]={});
+        c=c[e]}a=a[a.length-1];
+        d=c[a];
+        b=b(d);
+        b!=d&&null!=b&&$jscomp.defineProperty(c,a,{configurable:!0,writable:!0,value:b})
+};
+$jscomp.polyfillIsolated=function(a,b,c,d){
+    var e=a.split(".");
+    a=1===e.length;
+    d=e[0];
+    d=!a&&d in $jscomp.polyfills?$jscomp.polyfills:$jscomp.global;for(var f=0;f<e.length-1;f++){
+        var g=e[f];
+        g in d||(d[g]={});
+        d=d[g]}e=e[e.length-1];
+        c=$jscomp.IS_SYMBOL_NATIVE&&"es6"===c?d[e]:null;
+        b=b(c);
+        null!=b&&(a?$jscomp.defineProperty($jscomp.polyfills,e,{configurable:!0,writable:!0,value:b}):b!==c&&($jscomp.propertyToPolyfillSymbol[e]=$jscomp.IS_SYMBOL_NATIVE?$jscomp.global.Symbol(e):$jscomp.POLYFILL_PREFIX+e,e=$jscomp.propertyToPolyfillSymbol[e],
+$jscomp.defineProperty(d,e,{configurable:!0,writable:!0,value:b})))
+};
+$jscomp.polyfill("Object.assign",function(a){return a||$jscomp.assign},"es6","es3");
+$jscomp.polyfill("Array.from",function(a){return a?a:function(a,c,d){
+    c=null!=c?c:function(a){return a};
+    var b=[],f="undefined"!=typeof Symbol&&Symbol.iterator&&a[Symbol.iterator];
+    if("function"==typeof f){
+        a=f.call(a);
+        for(var g=0;!(f=a.next()).done;) b.push(c.call(d,f.value,g++))
+    }
+    
+    else for(f=a.length,g=0;g<f;g++) b.push(c.call(d,a[g],g));
+    return b
+}},"es6","es3");
+$jscomp.arrayIteratorImpl=function(a){
+    var b=0;
+    return function(){
+        return b<a.length?{done:!1,value:a[b++]}:{done:!0}
+    }
+};
+$jscomp.arrayIterator=function(a){return{next:$jscomp.arrayIteratorImpl(a)}};
+$jscomp.SYMBOL_PREFIX="jscomp_symbol_";
+$jscomp.initSymbol=function(){
+    $jscomp.initSymbol=function(){};
+    $jscomp.global.Symbol||($jscomp.global.Symbol=$jscomp.Symbol)
+};
+$jscomp.SymbolClass=function(a,b){
+    this.$jscomp$symbol$id_=a;
+    $jscomp.defineProperty(this,"description",{configurable:!0,writable:!0,value:b})
+};
+$jscomp.SymbolClass.prototype.toString=function(){return this.$jscomp$symbol$id_};
+$jscomp.Symbol=function(){function a(c){
+    if(this instanceof a)
+    throw new TypeError("Symbol is not a constructor");
+    return new $jscomp.SymbolClass($jscomp.SYMBOL_PREFIX+(c||"")+"_"+b++,c)
+} var b=0; return a}();
+
+$jscomp.initSymbolIterator=function(){
+    $jscomp.initSymbol();
+    var a=$jscomp.global.Symbol.iterator;
+    a||(a=$jscomp.global.Symbol.iterator=$jscomp.global.Symbol("Symbol.iterator"));
+    "function"!=typeof Array.prototype[a]&&$jscomp.defineProperty(Array.prototype,a,{configurable:!0,writable:!0,value:function(){
+        return $jscomp.iteratorPrototype($jscomp.arrayIteratorImpl(this))
+    }});
+    $jscomp.initSymbolIterator=function(){}
+};
+$jscomp.initSymbolAsyncIterator=function(){
+    $jscomp.initSymbol();
+    var a=$jscomp.global.Symbol.asyncIterator;
+    a||(a=$jscomp.global.Symbol.asyncIterator=$jscomp.global.Symbol("Symbol.asyncIterator"));
+    $jscomp.initSymbolAsyncIterator=function(){}
+};
+
+$jscomp.iteratorPrototype=function(a){
+    $jscomp.initSymbolIterator();
+    a={next:a};
+    a[$jscomp.global.Symbol.iterator]=function(){return this};
+    return a
+};
+$jscomp.iteratorFromArray=function(a,b){
+    $jscomp.initSymbolIterator();
+    a instanceof String&&(a+="");
+    var c=0,d={next:function(){
+        if(c<a.length){
+            var e=c++;
+            return{value:b(e,a[e]),done:!1}
+        }
+        d.next=function(){return{done:!0,value:void 0}};
+        return d.next()
+    }};
+    d[Symbol.iterator]=function(){return d};
+    return d
+};
+$jscomp.polyfill("Array.prototype.keys",function(a){return a?a:function(){
+    return $jscomp.iteratorFromArray(this,function(a){return a})
+}},"es6","es3");
+
+$jscomp.polyfill("Number.isFinite",function(a){return a?a:function(a){
+    return"number"!==typeof a?!1:!isNaN(a)&&Infinity!==a&&-Infinity!==a
+}},"es6","es3");
+
+$jscomp.polyfill("Array.prototype.fill",function(a){
+    return a?a:function(a,c,d){
+        var b=this.length||0;0>c&&(c=Math.max(0,b+c));
+        if(null==d||d>b)
+            d=b;
+        d=Number(d);
+        0>d&&(d=Math.max(0,b+d));
+        for(c=Number(c||0);c<d;c++) this[c]=a;
+        return this
+    }
+},"es6","es3");
+
+$jscomp.polyfill("Object.is",function(a){
+    return a?a:function(a,c){
+        return a===c?0!==a||1/a===1/c:a!==a&&c!==c
+    }
+},"es6","es3");
+
+$jscomp.polyfill("Array.prototype.includes",function(a){
+    return a?a:function(a,c){
+        var b=this;
+        b instanceof String&&(b=String(b));
+        var e=b.length;
+        c=c||0;
+        for(0>c&&(c=Math.max(c+e,0));c<e;c++){
+            var f=b[c];
+            if(f===a||Object.is(f,a)) return!0
+        }
+        return!1
+    }
+},"es7","es3");
+
+$jscomp.checkStringArgs=function(a,b,c){
+    if(null==a) throw new TypeError("The 'this' value for String.prototype."+c+" must not be null or undefined");
+    if(b instanceof RegExp) throw new TypeError("First argument to String.prototype."+c+" must not be a regular expression");
+    return a+""
+};
+
+$jscomp.polyfill("String.prototype.includes",function(a){
+    return a?a:function(a,c){
+        return-1!==$jscomp.checkStringArgs(this,a,"includes").indexOf(a,c||0)
+    }
+},"es6","es3");
+
+$jscomp.polyfill("Array.prototype.flat",function(a){
+    return a?a:function(a){
+        a=void 0===a?1:a;
+        for(var b=[],d=0;d<this.length;d++){
+            var e=this[d];
+            Array.isArray(e)&&0<a?(e=Array.prototype.flat.call(e,a-1),b.push.apply(b,e)):b.push(e)
+        }
+        return b
+    }
+},"es9","es5");
+
+$jscomp.polyfill("Math.trunc",function(a){
+    return a?a:function(a){
+        a=Number(a);
+        if(isNaN(a)||Infinity===a||-Infinity===a||0===a)    return a;
+        var b=Math.floor(Math.abs(a));
+        return 0>a?-b:b
+    }
+},"es6","es3");
+
 var MAXSPRITES=100,MAXBITMAPS=1E3,MY_CENTRAL=-99999,MAX_FONTS=100,my_font_number=0,my_fonts=[],my_fonts_size=[],MY_VIDEO_DOUBLEBUFFER=1,MY_KEY_STATUS_CORRECT=1,MY_KEY_STATUS_WRONG=2,MY_KEY_STATUS_TIMEOUT=3,my_screen_center_x=0,my_screen_x_offset=0,my_screen_center_y=0,my_screen_y_offset=0,my_screen_width=800,my_screen_height=600,my_frame_w=800,my_frame_h=600,my_bgcol_r=0,my_bgcol_g=0,my_bgcol_b=0,my_exp_start_time=0,my_exp_current_time=0,my_blockorder=1,tablerow=0,keystatus=
-{key:0,status:0,time:0,totaltime:0,mouse_x:0,mouse_y:0,bitmap:0},possiblekeys=[],readkeys_option_size=5,readkeys_option_show=1,readkeys_option_show_x=0,readkeys_option_show_y=0,readkeys_option_font=1,readkeys_option_placeholders=0,readkeys_option_placeholder_bitmap=-1,readkeys_option_placeholder_w=0,readkeys_option_placeholder_h=0,readkeys_option_spacing=30,readkeys_option_font_color=[255,255,255],mousestatus={key:0,status:0,time:0,totaltime:0,x:0,y:0},my_canvas=document.getElementById("exp"),canvas_x_offset=
-my_canvas.getBoundingClientRect().left,canvas_y_offset=my_canvas.getBoundingClientRect().top,my_mouse_cursor=0,my_mouse_store=0,ctx=my_canvas.getContext("2d"),log=document.getElementById("log"),output=document.getElementById("Output");outputdata=String();var my_bitmaps=[],my_sounds=[],my_bitmaps_loaded=0,my_sounds_loaded=0,my_videos_loaded=0,bmp_number=0,my_video_number=0,my_sound_number=0,my_pb={color1:[0,0,0],color2:[0,0,0],items1:0,items2:0,itemwidth:0,between:0,layout:0};
-function my_stimuli_loaded(){total_stimuli=bmp_number+my_sound_number+my_video_number;total_loaded=my_bitmaps_loaded+my_sounds_loaded+my_videos_loaded;var a=0<total_stimuli?Math.round(total_loaded/total_stimuli*100):100;if((tmp=my_bitmaps_loaded<bmp_number||my_sounds_loaded<my_sound_number||my_videos_loaded<my_video_number)&&100>a)return a;if(tmp&&100==a)return 99;if(my_bitmaps_loaded==bmp_number&&my_sounds_loaded==my_sound_number&&my_videos_loaded==my_video_number)return 100}
+{key:0,status:0,time:0,totaltime:0,mouse_x:0,mouse_y:0,bitmap:0},possiblekeys=[],readkeys_option_size=5,readkeys_option_show=1,readkeys_option_show_x=0,readkeys_option_show_y=0,readkeys_option_font=1,readkeys_option_placeholders=0,readkeys_option_placeholder_bitmap=-1,readkeys_option_placeholder_w=0,readkeys_option_placeholder_h=0,readkeys_option_spacing=30,readkeys_option_font_color=[255,255,255],mousestatus={key:0,status:0,time:0,totaltime:0,x:0,y:0}, my_canvas=document.getElementById("exp"),canvas_x_offset=
+my_canvas.getBoundingClientRect().left,canvas_y_offset=my_canvas.getBoundingClientRect().top,my_mouse_cursor=0,my_mouse_store=0,ctx=my_canvas.getContext("2d"),log=document.getElementById("log"),output=document.getElementById("Output");
+
+outputdata=String();
+var my_bitmaps=[],my_sounds=[],my_bitmaps_loaded=0,my_sounds_loaded=0,my_videos_loaded=0,bmp_number=0,my_video_number=0,my_sound_number=0,my_pb={color1:[0,0,0],color2:[0,0,0],items1:0,items2:0,itemwidth:0,between:0,layout:0};
+
+function my_stimuli_loaded(){
+    total_stimuli=bmp_number+my_sound_number+my_video_number;
+    total_loaded=my_bitmaps_loaded+my_sounds_loaded+my_videos_loaded;
+    var a = 0 < total_stimuli ? Math.round(total_loaded/total_stimuli*100) : 100;
+    if((tmp=my_bitmaps_loaded<bmp_number||my_sounds_loaded<my_sound_number||my_videos_loaded<my_video_number) && 100 > a) return a;
+    if(tmp && 100 == a) return 99;
+    if(my_bitmaps_loaded == bmp_number && my_sounds_loaded == my_sound_number && my_videos_loaded == my_video_number) return 100
+}
 var stimuli_loader_indicator=0;
-function when_stimuli_loaded_do(a){tmp=my_stimuli_loaded();ctx.fillStyle=hexrgb(my_bgcol_r,my_bgcol_g,my_bgcol_b);ctx.fillRect(0,0,my_screen_width,my_screen_height);ctx.font="30px Arial";ctx.textAlign="left";0==stimuli_loader_indicator?(ctx.fillStyle="white",stimuli_loader_indicator=1):(ctx.fillStyle="green",stimuli_loader_indicator=0);100>tmp?(0==tmp?ctx.fillText("Loading data",100,100):ctx.fillText("Loading data "+tmp+"%",100,100),setTimeout(when_stimuli_loaded_do,250,a)):setTimeout(a,0)}
-function my_load_bitmap(a){my_bitmaps[bmp_number]=new Image;my_bitmaps[bmp_number].onload=function(){my_bitmaps_loaded++};my_bitmaps[bmp_number].src=a;bmp_number++;return bmp_number-1}function my_load_sound(a){my_sounds[my_sound_number]=new Audio;my_sounds[my_sound_number].src=a;my_sounds[my_sound_number].load();my_sounds[my_sound_number].onloadeddata=function(){my_sounds_loaded++};my_sound_number++;return my_sound_number-1}var my_videos=[],my_videos_playing=0;
-function my_videos_loaded_call(a){my_videos_loaded++}var MyVideo=function(a){this.video=document.createElement("video");this.video.autoplay=!1;this.video.src=a;this.video.load();this.video.oncanplaythrough=my_videos_loaded_call;this.playing=!1};MyVideo.prototype.play=function(){0==this.playing&&(this.playing=!0,this.video.play(),0==my_videos_playing&&(requestAnimationFrame(my_animation_updater),my_videos_playing++))};MyVideo.prototype.pause=function(){this.video.pause()};
-MyVideo.prototype.unpause=function(){this.video.paused&&this.video.play()};MyVideo.prototype.clear=function(){this.playing=!1;this.video.pause();this.video.currentTime=0;my_videos_playing--};MyVideo.prototype.rewind=function(){this.video.currentTime=0};MyVideo.prototype.mute=function(){this.video.muted=!0};MyVideo.prototype.unmute=function(){this.video.muted=!1};MyVideo.prototype.loop=function(){this.video.loop=!0};MyVideo.prototype.once=function(){this.video.loop=!1};
-function my_animation_updater(){for(i=0;i<my_stimuli1_end;i++)5==my_stimuli1[i].type&&1==my_videos[my_stimuli1[i].bitmap-1].playing&&ctx.drawImage(my_videos[my_stimuli1[i].bitmap-1].video,my_stimuli1[i].rect.x,my_stimuli1[i].rect.y,my_stimuli1[i].rect.width,my_stimuli1[i].rect.height);0<my_videos_playing&&requestAnimationFrame(my_animation_updater)}function my_load_video(a){my_videos.push(new MyVideo(a));my_video_number++;return my_video_number-1}
-function my_play_video(a,b,c){my_stimuli1[my_stimuli1_end]=new my_stimulus1;my_stimuli1[my_stimuli1_end].rect=new Rectangle;my_stimuli1[my_stimuli1_end].type=5;my_stimuli1[my_stimuli1_end].bitmap=a;my_stimuli1[my_stimuli1_end].on=1;my_stimuli1[my_stimuli1_end].x=b;my_stimuli1[my_stimuli1_end].y=c;b=b==MY_CENTRAL?my_screen_center_x-my_videos[a-1].video.videoWidth/2:b+my_screen_x_offset-my_videos[a-1].video.videoWidth/2;tmpy=c==MY_CENTRAL?my_screen_center_y-my_videos[a-1].video.videoHeight/
-2:c+my_screen_y_offset-my_videos[a-1].video.videoHeight/2;my_stimuli1[my_stimuli1_end].rect.x=b;my_stimuli1[my_stimuli1_end].rect.y=tmpy;my_stimuli1[my_stimuli1_end].rect.width=my_videos[a-1].video.videoWidth;my_stimuli1[my_stimuli1_end].rect.height=my_videos[a-1].video.videoHeight;my_stimuli1_n++;my_stimuli1_end++;my_videos[a-1].play()}
-function my_play_video_wh(a,b,c,d,e){my_stimuli1[my_stimuli1_end]=new my_stimulus1;my_stimuli1[my_stimuli1_end].rect=new Rectangle;my_stimuli1[my_stimuli1_end].type=5;my_stimuli1[my_stimuli1_end].bitmap=a;my_stimuli1[my_stimuli1_end].on=1;my_stimuli1[my_stimuli1_end].x=b;my_stimuli1[my_stimuli1_end].y=c;b=b==MY_CENTRAL?my_screen_center_x-d/2:b+my_screen_x_offset-d/2;tmpy=c==MY_CENTRAL?my_screen_center_y-e/2:c+my_screen_y_offset-e/2;my_stimuli1[my_stimuli1_end].rect.x=b;my_stimuli1[my_stimuli1_end].rect.y=
-tmpy;my_stimuli1[my_stimuli1_end].rect.width=d;my_stimuli1[my_stimuli1_end].rect.height=e;my_stimuli1_n++;my_stimuli1_end++;my_videos[a-1].play()}
-function my_play_video_scale(a,b,c,d){my_stimuli1[my_stimuli1_end]=new my_stimulus1;my_stimuli1[my_stimuli1_end].rect=new Rectangle;my_stimuli1[my_stimuli1_end].type=5;my_stimuli1[my_stimuli1_end].bitmap=a;my_stimuli1[my_stimuli1_end].on=1;my_stimuli1[my_stimuli1_end].x=b;my_stimuli1[my_stimuli1_end].y=c;var e=my_videos[a-1].video.videoWidth*d/100;d=my_videos[a-1].video.videoHeight*d/100;b=b==MY_CENTRAL?my_screen_center_x-e/2:b+my_screen_x_offset-e/2;tmpy=c==MY_CENTRAL?my_screen_center_y-
-d/2:c+my_screen_y_offset-d/2;my_stimuli1[my_stimuli1_end].rect.x=b;my_stimuli1[my_stimuli1_end].rect.y=tmpy;my_stimuli1[my_stimuli1_end].rect.width=e;my_stimuli1[my_stimuli1_end].rect.height=d;my_stimuli1_n++;my_stimuli1_end++;my_videos[a-1].play()}function my_continue_video(a){my_videos[a-1].unpause()}function my_pause_video(a){my_videos[a-1].pause()}function my_rewind_video(a){my_videos[a-1].rewind()}function my_mute_video(a){my_videos[a-1].mute()}
-function my_unmute_video(a){my_videos[a-1].unmute()}function my_loop_video(a){my_videos[a-1].loop()}function my_once_video(a){my_videos[a-1].once()}function my_play(a,b){my_sounds[a-1].play();1==b&&(my_sounds[a-1].loop=!0)}function my_silence(a){my_sounds[a-1].pause();my_sounds[a-1].currentTime=0}function my_load_font(a,b){my_fonts[my_font_number]=b+"pt "+a;my_fonts_size[my_font_number]=b;my_font_number++;return my_font_number-1}
-function addlog(a){null!=log&&(log.value+=a+"\n",log.scrollTop=log.scrollHeight)}function addoutput(a){null!=output&&(output.value+=a+"\n");outputdata=outputdata+a+"\n"}function hexrgb(a,b,c){h="#";h=16>a?h+"0"+a.toString(16):h+a.toString(16);h=16>b?h+"0"+b.toString(16):h+b.toString(16);return h=16>c?h+"0"+c.toString(16):h+c.toString(16)}starttime=0;
-function my_expect_keyboard(){my_readkey.expect_keyboard=!0;window.addEventListener("keydown",getkeydown,!0);window.addEventListener("keyup",getkeyup,!0);my_readkey.keyupeventlistener=!0;my_readkey.keydowneventlistener=!0}function my_expect_keyboard_readkeys(){my_readkeys.expect_keyboard=!0;window.addEventListener("keydown",readkeys_keydown,!0);window.addEventListener("keyup",readkeys_keyup,!0);my_readkeys.keyupeventlistener=!0;my_readkeys.keydowneventlistener=!0}
-function my_expect_mouse(){my_readkey.expect_mouse=!0}function my_keyboard(a,b,c,d){my_readkey.expectedkey=a[c];my_readkey.keys=a;my_expect_keyboard();my_readkey.start(current_task,d)}function my_keyboard_readkeys(a,b){my_expect_keyboard_readkeys();my_readkeys.correct_word=a;my_readkeys.start(current_task,b)}
-var my_readkey={lasttask:"",starttime:0,readkeytimer:"",rt:0,key:0,status:0,keys:[],expect_keyboard:!1,expect_mouse:!1,expectedkey:0,bitmap:0,bitmap_range:[-1,-1],array_search:!1,mouseovereventlistener:0,mousedowneventlistener:!1,keyupeventlistener:!1,keydowneventlistener:!1,start:function(a,b){my_readkey.rt=b;my_readkey.key=0;my_readkey.starttime=(new Date).getTime();my_readkey.lasttask=a;my_readkey.readkeytimer=setTimeout("my_readkey.timeout()",b);keystatus.status=3;keystatus.bitmap=-1;keystatus.time=
-b;keystatus.key=0},stop:function(){clearTimeout(my_readkey.readkeytimer);my_readkey.expect_keyboard=!1;my_readkey.expect_mouse=!1;1==my_readkey.mouseovereventlistener&&(window.removeEventListener("mousemove",getmouse_in_area,!1),my_readkey.mouseovereventlistener=0);2==my_readkey.mouseovereventlistener&&(window.removeEventListener("mousemove",getmouse_in_area_check_all,!1),my_readkey.mouseovereventlistener=0);1==my_readkey.mousedowneventlistener&&(window.removeEventListener("mousedown",getmouseclick_in_area,
-!1),my_readkey.mousedowneventlistener=!1);1==my_readkey.keyupeventlistener&&(window.removeEventListener("keyup",getkeyup,!1),my_readkey.keyupeventlistener=!1);1==my_readkey.keydowneventlistener&&(window.removeEventListener("keydown",getkeydown,!1),my_readkey.keydowneventlistener=!1);eval(my_readkey.lasttask+".run()")},timeout:function(){my_readkey.expect_keyboard=!1;my_readkey.expect_mouse=!1;1==my_readkey.mouseovereventlistener&&(window.removeEventListener("mousemove",getmouse_in_area,!1),
-my_readkey.mouseovereventlistener=!1);1==my_readkey.mousedowneventlistener&&(window.removeEventListener("mousedown",getmouseclick_in_area,!1),my_readkey.mousedowneventlistener=!1);eval(my_readkey.lasttask+".run()")}},my_drag={lasttask:"",timer:0,starttime:0,fromarray:[],onarray:[],stimulus:0,stimulus_old_x:0,stimulus_old_y:0,x:0,y:0,stimulus_copy:0,changed:0,on:0,snap:!1,ghost:!1,dragging:!1,exit:0,maxrt:0,mousedowneventlistener:!1,mouseupeventlistener:!1,mousemoveeventlistener:!1,xlim:[-9999,
-9999],ylim:[-9999,9999],align_x:0,align_y:0,align_o:0,noa:[],xstack:0,ystack:0,stop:function(){my_drag.mousedowneventlistener&&window.removeEventListener("mousedown",getmousedowndrag,!1);my_drag.mouseupeventlistener&&window.removeEventListener("mouseup",getmouseupdrag,!1);my_drag.mousemoveeventlistener&&window.removeEventListener("mousemove",getmousemovedrag,!1);my_drag.mousedowneventlistener=!1;my_drag.mouseupeventlistener=!1;my_drag.mousemoveeventlistener=!1},timeout:function(){my_drag.stop();
-keystatus.status=3;keystatus.time=my_drag.maxrt;0<my_drag.stimulus&&(my_canvas.style.cursor="default",my_stimuli1[my_drag.stimulus-1].x==my_drag.stimulus_old_x&&my_stimuli1[my_drag.stimulus-1].y==my_drag.stimulus_old_y&&(my_relocate_existing_stimulus(my_drag.stimulus,my_drag.stimulus_old_x,my_drag.stimulus_old_y),my_draw_all_db()));setTimeout(current_task+".run()",0)},run_dragging:function(){0==my_drag.dragging?(my_drag.stop(),setTimeout(current_task+".run()",0)):(my_drag.mousedowneventlistener=
-!0,window.addEventListener("mousedown",getmousedowndrag,!1))},timeout_dragging:function(){my_drag.dragging=!1;my_drag.timeout()}};
-function getmousedowndrag(a){canvas_x_offset=my_canvas.getBoundingClientRect().left;canvas_y_offset=my_canvas.getBoundingClientRect().top;canvas_w=my_canvas.getBoundingClientRect().width;canvas_h=my_canvas.getBoundingClientRect().height;tmpmouseX=Math.round((a.clientX-canvas_x_offset)*my_screen_width/canvas_w);tmpmouseY=Math.round((a.clientY-canvas_y_offset)*my_screen_height/canvas_h);a=my_bitmap_under_mouse_in_range(my_drag.fromarray,tmpmouseX-my_screen_x_offset,tmpmouseY-my_screen_y_offset);
-1==my_drag.dragging&&a==my_drag.exit?(clearTimeout(my_drag.timer),my_drag.dragging=!1,setTimeout(my_drag.run_dragging,0)):0<a&&(my_drag.stimulus_copy=my_copy_stimulus(a),my_drag.stimulus_old_x=my_stimuli1[a-1].x,my_drag.stimulus_old_y=my_stimuli1[a-1].y,my_clear_stimuli1(a),my_canvas.style.cursor="move",my_drag.stimulus=a,window.addEventListener("mousemove",getmousemovedrag,!1),window.addEventListener("mouseup",getmouseupdrag,!1),my_drag.mousemoveeventlistener=!0,my_drag.mouseupeventlistener=
-!0,window.removeEventListener("mousedown",getmousedowndrag,!1),my_drag.mousedowneventlistener=!1)}
-function getmouseupdrag(a){keystatus.time=(new Date).getTime()-my_drag.starttime;my_canvas.style.cursor="default";window.removeEventListener("mousemove",getmousemovedrag,!1);window.removeEventListener("mouseup",getmouseupdrag,!1);my_drag.mousemoveeventlistener=!1;my_drag.mouseupeventlistener=!1;0==my_drag.dragging&&clearTimeout(my_drag.timer);0<my_drag.toarray.length?0<my_drag.stimulus?(my_stimuli1[my_drag.stimulus-1]=Object.assign({},my_stimuli1[my_drag.stimulus_copy-1]),my_stimuli1_n++,
-my_delete_last_stimulus(),canvas_x_offset=my_canvas.getBoundingClientRect().left,canvas_y_offset=my_canvas.getBoundingClientRect().top,canvas_w=my_canvas.getBoundingClientRect().width,canvas_h=my_canvas.getBoundingClientRect().height,tmpmouseX=Math.round((a.clientX-canvas_x_offset)*my_screen_width/canvas_w)-my_screen_x_offset,tmpmouseY=Math.round((a.clientY-canvas_y_offset)*my_screen_height/canvas_h)-my_screen_y_offset,keystatus.mouse_x=tmpmouseX,keystatus.mouse_y=tmpmouseY,a=my_array_remove_value(Array.from(my_drag.toarray),
-my_drag.stimulus),my_drag.on=my_bitmap_under_mouse_in_range(a,tmpmouseX,tmpmouseY),0<my_drag.on?(1==my_drag.align_x&&(my_drag.xstack=1),3==my_drag.align_x&&(my_drag.xstack=-1),1==my_drag.align_y&&(my_drag.ystack=1),3==my_drag.align_y&&(my_drag.ystack=-1),my_stimuli_align(my_drag.stimulus,my_drag.on,my_drag.align_x,my_drag.align_y,my_drag.align_o,my_array_remove_value(my_drag.noa,my_drag.stimulus),my_drag.xstack,my_drag.ystack),my_draw_all_db(),keystatus.status=1):keystatus.status=
+function when_stimuli_loaded_do(a){
+    tmp = my_stimuli_loaded();
+    ctx.fillStyle = hexrgb(my_bgcol_r,my_bgcol_g,my_bgcol_b);
+    ctx.fillRect(0, 0, my_screen_width, my_screen_height);
+    ctx.font="30px Arial";
+    ctx.textAlign="left";
+    0 == stimuli_loader_indicator ? (ctx.fillStyle="white", stimuli_loader_indicator=1):(ctx.fillStyle="green", stimuli_loader_indicator=0);
+    100 > tmp ? (0 == tmp ? ctx.fillText("Loading data",100,100): ctx.fillText("Loading data "+tmp+"%",100,100), setTimeout(when_stimuli_loaded_do,250,a)):setTimeout(a,0)
+}
+
+function my_load_bitmap(a){
+    my_bitmaps[bmp_number] = new Image;
+    my_bitmaps[bmp_number].onload=function(){
+        my_bitmaps_loaded++
+    };
+    my_bitmaps[bmp_number].src = a;
+    bmp_number++;
+    return bmp_number-1
+}
+
+function my_load_sound(a){
+    my_sounds[my_sound_number] = new Audio;
+    my_sounds[my_sound_number].src = a;
+    my_sounds[my_sound_number].load();
+    my_sounds[my_sound_number].onloadeddata = function(){
+        my_sounds_loaded++
+    };
+    my_sound_number++;
+    return my_sound_number-1
+}
+
+var my_videos=[],my_videos_playing=0;
+function my_videos_loaded_call(a){
+    my_videos_loaded++
+}
+
+var MyVideo = function(a){
+    this.video=document.createElement("video");
+    this.video.autoplay = !1;
+    this.video.src = a;
+    this.video.load();
+    this.video.oncanplaythrough = my_videos_loaded_call;
+    this.playing =! 1
+};
+
+MyVideo.prototype.play = function(){
+    0 == this.playing && (this.playing =! 0, this.video.play(), 0 == my_videos_playing && (requestAnimationFrame(my_animation_updater),my_videos_playing++))
+};
+
+MyVideo.prototype.pause = function(){
+    this.video.pause()
+};
+
+MyVideo.prototype.unpause = function(){
+    this.video.paused && this.video.play()
+};
+
+MyVideo.prototype.clear = function(){
+    this.playing =! 1;
+    this.video.pause();
+    this.video.currentTime = 0;
+    my_videos_playing--
+};
+
+MyVideo.prototype.rewind = function(){
+    this.video.currentTime=0
+};
+
+MyVideo.prototype.mute=function(){
+    this.video.muted =! 0
+};
+
+MyVideo.prototype.unmute=function(){
+    this.video.muted =! 1
+};
+
+MyVideo.prototype.loop=function(){
+    this.video.loop =! 0
+};
+
+MyVideo.prototype.once=function(){
+    this.video.loop =! 1
+};
+
+function my_animation_updater(){
+    for(i=0;i<my_stimuli1_end;i++)
+        5 == my_stimuli1[i].type && 1 == my_videos[my_stimuli1[i].bitmap-1].playing && ctx.drawImage(my_videos[my_stimuli1[i].bitmap-1].video,my_stimuli1[i].rect.x,my_stimuli1[i].rect.y,my_stimuli1[i].rect.width,my_stimuli1[i].rect.height);
+        0 < my_videos_playing && requestAnimationFrame(my_animation_updater)
+}
+
+function my_load_video(a) {
+    my_videos.push(new MyVideo(a));
+    my_video_number++;
+    return my_video_number-1
+}
+
+function my_play_video(a,b,c){
+    my_stimuli1[my_stimuli1_end] = new my_stimulus1;
+    my_stimuli1[my_stimuli1_end].rect = new Rectangle;
+    my_stimuli1[my_stimuli1_end].type = 5;
+    my_stimuli1[my_stimuli1_end].bitmap = a;
+    my_stimuli1[my_stimuli1_end].on = 1;
+    my_stimuli1[my_stimuli1_end].x = b;
+    my_stimuli1[my_stimuli1_end].y = c;
+    b = b == MY_CENTRAL?my_screen_center_x-my_videos[a-1].video.videoWidth/2:b+my_screen_x_offset-my_videos[a-1].video.videoWidth/2;
+    tmpy = c == MY_CENTRAL?my_screen_center_y-my_videos[a-1].video.videoHeight/
+2:c+my_screen_y_offset-my_videos[a-1].video.videoHeight/2;
+    my_stimuli1[my_stimuli1_end].rect.x=b;
+    my_stimuli1[my_stimuli1_end].rect.y=tmpy;
+    my_stimuli1[my_stimuli1_end].rect.width=my_videos[a-1].video.videoWidth;
+    my_stimuli1[my_stimuli1_end].rect.height=my_videos[a-1].video.videoHeight;
+    my_stimuli1_n++;
+    my_stimuli1_end++;
+    my_videos[a-1].play()
+}
+
+function my_play_video_wh(a,b,c,d,e){
+    my_stimuli1[my_stimuli1_end] = new my_stimulus1;
+    my_stimuli1[my_stimuli1_end].rect = new Rectangle;
+    my_stimuli1[my_stimuli1_end].type = 5;
+    my_stimuli1[my_stimuli1_end].bitmap = a;
+    my_stimuli1[my_stimuli1_end].on = 1;
+    my_stimuli1[my_stimuli1_end].x = b;
+    my_stimuli1[my_stimuli1_end].y = c;
+    b = b == MY_CENTRAL ? my_screen_center_x-d/2:b+my_screen_x_offset-d/2;
+    tmpy=c==MY_CENTRAL?my_screen_center_y-e/2:c+my_screen_y_offset-e/2;
+    my_stimuli1[my_stimuli1_end].rect.x=b;
+    my_stimuli1[my_stimuli1_end].rect.y = tmpy;
+    my_stimuli1[my_stimuli1_end].rect.width = d;
+    my_stimuli1[my_stimuli1_end].rect.height = e;
+    my_stimuli1_n++;
+    my_stimuli1_end++;
+    my_videos[a-1].play()
+}
+
+function my_play_video_scale(a,b,c,d){
+    my_stimuli1[my_stimuli1_end] = new my_stimulus1;
+    my_stimuli1[my_stimuli1_end].rect = new Rectangle;
+    my_stimuli1[my_stimuli1_end].type = 5;
+    my_stimuli1[my_stimuli1_end].bitmap = a;
+    my_stimuli1[my_stimuli1_end].on = 1;
+    my_stimuli1[my_stimuli1_end].x = b;
+    my_stimuli1[my_stimuli1_end].y = c;
+    var e = my_videos[a-1].video.videoWidth*d/100;
+    d = my_videos[a-1].video.videoHeight*d/100;
+    b = b == MY_CENTRAL ? my_screen_center_x-e/2:b+my_screen_x_offset-e/2;
+    tmpy = c == MY_CENTRAL ? my_screen_center_y-d/2:c+my_screen_y_offset-d/2;
+    my_stimuli1[my_stimuli1_end].rect.x = b;
+    my_stimuli1[my_stimuli1_end].rect.y = tmpy;
+    my_stimuli1[my_stimuli1_end].rect.width = e;
+    my_stimuli1[my_stimuli1_end].rect.height = d;
+    my_stimuli1_n++;
+    my_stimuli1_end++;
+    my_videos[a-1].play()
+}
+
+function my_continue_video(a){
+    my_videos[a-1].unpause()
+}
+
+function my_pause_video(a){
+    my_videos[a-1].pause()
+}
+
+function my_rewind_video(a){
+    my_videos[a-1].rewind()
+}
+
+function my_mute_video(a){my_videos[a-1].mute()}
+function my_unmute_video(a){
+    my_videos[a-1].unmute()
+}
+
+function my_loop_video(a){
+    my_videos[a-1].loop()
+}
+
+function my_once_video(a){
+    my_videos[a-1].once()
+}
+
+function my_play(a,b){
+    my_sounds[a-1].play();
+    1 == b && (my_sounds[a-1].loop=!0)
+}
+
+function my_silence(a){
+    my_sounds[a-1].pause();
+    my_sounds[a-1].currentTime=0
+}
+
+function my_load_font(a,b){
+    my_fonts[my_font_number] = b + "pt " + a;
+    my_fonts_size[my_font_number] = b;
+    my_font_number++;
+    return my_font_number-1
+}
+
+function addlog(a){
+    null != log && (log.value+=a + "\n", log.scrollTop=log.scrollHeight)
+}
+
+function addoutput(a){
+    null != output && (output.value+=a + "\n");
+    outputdata = outputdata + a + "\n"
+}
+
+function hexrgb(a,b,c){
+    h="#";
+    h = 16 > a ? h + "0" + a.toString(16):h+a.toString(16);
+    h = 16 > b ? h + "0" + b.toString(16):h+b.toString(16);
+    return h = 16 > c ? h + "0" + c.toString(16):h+c.toString(16)
+} starttime = 0;
+
+function my_expect_keyboard(){
+    my_readkey.expect_keyboard =! 0;
+    window.addEventListener("keydown",getkeydown,!0);
+    window.addEventListener("keyup",getkeyup,!0);
+    my_readkey.keyupeventlistener =! 0;
+    my_readkey.keydowneventlistener =! 0
+}
+
+function my_expect_keyboard_readkeys(){
+    my_readkeys.expect_keyboard =! 0;
+    window.addEventListener("keydown",readkeys_keydown,!0);
+    window.addEventListener("keyup",readkeys_keyup,!0);
+    my_readkeys.keyupeventlistener =! 0;
+    my_readkeys.keydowneventlistener =! 0
+}
+
+function my_expect_mouse(){
+    my_readkey.expect_mouse =! 0
+}
+
+function my_keyboard(a,b,c,d){
+    my_readkey.expectedkey = a[c];
+    my_readkey.keys=a;
+    my_expect_keyboard();
+    my_readkey.start(current_task,d)
+}
+
+function my_keyboard_readkeys(a,b){
+    my_expect_keyboard_readkeys();
+    my_readkeys.correct_word = a;
+    my_readkeys.start(current_task,b)
+}
+
+var my_readkey = {lasttask:"",starttime:0,readkeytimer:"",rt:0,key:0,status:0,keys:[],expect_keyboard:!1,expect_mouse:!1,expectedkey:0,bitmap:0,bitmap_range:[-1,-1],array_search:!1,mouseovereventlistener:0,mousedowneventlistener:!1,keyupeventlistener:!1,keydowneventlistener:!1,start:function(a,b){
+    my_readkey.rt=b;
+    my_readkey.key=0;
+    my_readkey.starttime=(new Date).getTime();
+    my_readkey.lasttask=a;
+    my_readkey.readkeytimer=setTimeout("my_readkey.timeout()",b);
+    keystatus.status=3;
+    keystatus.bitmap=-1;
+    keystatus.time=b;
+    keystatus.key=0
+},stop:function(){
+    clearTimeout(my_readkey.readkeytimer);
+    my_readkey.expect_keyboard=!1;
+    my_readkey.expect_mouse =! 1;
+    1 == my_readkey.mouseovereventlistener && (window.removeEventListener("mousemove",getmouse_in_area,!1), my_readkey.mouseovereventlistener=0);
+    2 == my_readkey.mouseovereventlistener && (window.removeEventListener("mousemove",getmouse_in_area_check_all,!1),my_readkey.mouseovereventlistener=0);
+    1 == my_readkey.mousedowneventlistener && (window.removeEventListener("mousedown",getmouseclick_in_area,!1),my_readkey.mousedowneventlistener=!1);
+    1 == my_readkey.keyupeventlistener && (window.removeEventListener("keyup",getkeyup,!1),my_readkey.keyupeventlistener=!1);
+    1 == my_readkey.keydowneventlistener && (window.removeEventListener("keydown",getkeydown,!1),my_readkey.keydowneventlistener=!1);
+    eval(my_readkey.lasttask+".run()")}, timeout:function(){
+        my_readkey.expect_keyboard=!1;
+        my_readkey.expect_mouse=!1;
+        1 == my_readkey.mouseovereventlistener && (window.removeEventListener("mousemove",getmouse_in_area,!1),my_readkey.mouseovereventlistener =! 1);
+        1 == my_readkey.mousedowneventlistener && (window.removeEventListener("mousedown",getmouseclick_in_area,!1),my_readkey.mousedowneventlistener=!1);
+        eval(my_readkey.lasttask+".run()")
+    }
+},my_drag={lasttask:"",timer:0,starttime:0,fromarray:[],onarray:[],stimulus:0,stimulus_old_x:0,stimulus_old_y:0,x:0,y:0,stimulus_copy:0,changed:0,on:0,snap:!1,ghost:!1,dragging:!1,exit:0,maxrt:0,mousedowneventlistener:!1,mouseupeventlistener:!1,mousemoveeventlistener:!1,xlim:[-9999,
+9999],ylim:[-9999,9999],align_x:0,align_y:0,align_o:0,noa:[],xstack:0,ystack:0,stop:function(){
+    my_drag.mousedowneventlistener && window.removeEventListener("mousedown",getmousedowndrag,!1);
+    my_drag.mouseupeventlistener && window.removeEventListener("mouseup",getmouseupdrag,!1);
+    my_drag.mousemoveeventlistener && window.removeEventListener("mousemove",getmousemovedrag,!1);
+    my_drag.mousedowneventlistener =! 1;
+    my_drag.mouseupeventlistener =! 1;
+    my_drag.mousemoveeventlistener =! 1
+},timeout:function(){
+    my_drag.stop();
+    keystatus.status=3;
+    keystatus.time=my_drag.maxrt;
+    0 < my_drag.stimulus && (my_canvas.style.cursor="default",my_stimuli1[my_drag.stimulus-1].x==my_drag.stimulus_old_x&&my_stimuli1[my_drag.stimulus-1].y==my_drag.stimulus_old_y&&(my_relocate_existing_stimulus(my_drag.stimulus,my_drag.stimulus_old_x,my_drag.stimulus_old_y),my_draw_all_db()));
+    setTimeout(current_task+".run()",0)
+},run_dragging:function(){
+    0 == my_drag.dragging ? (my_drag.stop(),setTimeout(current_task+".run()",0)):(my_drag.mousedowneventlistener=!0,window.addEventListener("mousedown",getmousedowndrag,!1))
+},timeout_dragging:function(){
+    my_drag.dragging=!1;
+    my_drag.timeout()
+}};
+
+function getmousedowndrag(a){
+    canvas_x_offset = my_canvas.getBoundingClientRect().left;
+    canvas_y_offset = my_canvas.getBoundingClientRect().top;
+    canvas_w = my_canvas.getBoundingClientRect().width;
+    canvas_h = my_canvas.getBoundingClientRect().height;
+    tmpmouseX = Math.round((a.clientX-canvas_x_offset) * my_screen_width/canvas_w);
+    tmpmouseY = Math.round((a.clientY - canvas_y_offset) * my_screen_height/canvas_h);
+    a = my_bitmap_under_mouse_in_range(my_drag.fromarray,tmpmouseX-my_screen_x_offset,tmpmouseY-my_screen_y_offset);
+    1 == my_drag.dragging && a == my_drag.exit ? (clearTimeout(my_drag.timer),my_drag.dragging=!1,setTimeout(my_drag.run_dragging,0)):0<a&&(my_drag.stimulus_copy=my_copy_stimulus(a),my_drag.stimulus_old_x=my_stimuli1[a-1].x,my_drag.stimulus_old_y=my_stimuli1[a-1].y,my_clear_stimuli1(a),my_canvas.style.cursor="move",my_drag.stimulus=a,window.addEventListener("mousemove",getmousemovedrag,!1),window.addEventListener("mouseup",getmouseupdrag,!1),my_drag.mousemoveeventlistener=!0,my_drag.mouseupeventlistener=
+!0,window.removeEventListener("mousedown",getmousedowndrag,!1),my_drag.mousedowneventlistener=!1)
+}
+
+function getmouseupdrag(a){
+    keystatus.time=(new Date).getTime()-my_drag.starttime;
+    my_canvas.style.cursor = "default";
+    window.removeEventListener("mousemove",getmousemovedrag,!1);
+    window.removeEventListener("mouseup",getmouseupdrag,!1);
+    my_drag.mousemoveeventlistener =! 1;
+    my_drag.mouseupeventlistener =! 1;
+    0 == my_drag.dragging && clearTimeout(my_drag.timer);
+    0 < my_drag.toarray.length ? 0 < my_drag.stimulus ? (my_stimuli1[my_drag.stimulus-1]=Object.assign({},my_stimuli1[my_drag.stimulus_copy-1]),my_stimuli1_n++,my_delete_last_stimulus(),canvas_x_offset = my_canvas.getBoundingClientRect().left,canvas_y_offset=my_canvas.getBoundingClientRect().top,canvas_w=my_canvas.getBoundingClientRect().width,canvas_h=my_canvas.getBoundingClientRect().height,tmpmouseX=Math.round((a.clientX-canvas_x_offset)*my_screen_width/canvas_w)-my_screen_x_offset,tmpmouseY=Math.round((a.clientY-canvas_y_offset)*my_screen_height/canvas_h)-my_screen_y_offset,keystatus.mouse_x=tmpmouseX,keystatus.mouse_y=tmpmouseY,a=my_array_remove_value(Array.from(my_drag.toarray),my_drag.stimulus),my_drag.on=my_bitmap_under_mouse_in_range(a,tmpmouseX,tmpmouseY),0<my_drag.on?(1==my_drag.align_x&&(my_drag.xstack=1),3==my_drag.align_x&&(my_drag.xstack=-1),1==my_drag.align_y&&(my_drag.ystack=1),3==my_drag.align_y&&(my_drag.ystack=-1),my_stimuli_align(my_drag.stimulus,my_drag.on,my_drag.align_x,my_drag.align_y,my_drag.align_o,my_array_remove_value(my_drag.noa,my_drag.stimulus),my_drag.xstack,my_drag.ystack),my_draw_all_db(),keystatus.status=1):keystatus.status=
 2,my_drag.changed=1):keystatus.status=3:(0<my_drag.stimulus&&(canvas_x_offset=my_canvas.getBoundingClientRect().left,canvas_y_offset=my_canvas.getBoundingClientRect().top,keystatus.mouse_x=a.clientX-canvas_x_offset-my_screen_x_offset,keystatus.mouse_y=a.clientY-canvas_y_offset-my_screen_y_offset,my_stimuli1[my_drag.stimulus-1]=Object.assign({},my_stimuli1[my_drag.stimulus_copy-1]),my_stimuli1_n++,my_delete_last_stimulus(),my_stimuli1[my_drag.stimulus-1].x!=my_drag.stimulus_old_x||my_stimuli1[my_drag.stimulus-
-1].y!=my_drag.stimulus_old_y)&&(my_drag.changed=1),keystatus.status=1);0<my_drag.stimulus&&1!=keystatus.status&&(my_stimuli1[my_drag.stimulus-1].x!=my_drag.stimulus_old_x||my_stimuli1[my_drag.stimulus-1].y==my_drag.stimulus_old_y)&&(my_drag.changed=1,my_relocate_existing_stimulus(my_drag.stimulus,my_drag.stimulus_old_x,my_drag.stimulus_old_y),my_draw_all_db());my_drag.dragging?setTimeout(my_drag.run_dragging,0):setTimeout(my_drag.lasttask+".run()",0)}
-function getmousemovedrag(a){canvas_x_offset=my_canvas.getBoundingClientRect().left;canvas_y_offset=my_canvas.getBoundingClientRect().top;canvas_w=my_canvas.getBoundingClientRect().width;canvas_h=my_canvas.getBoundingClientRect().height;tmpmouseX=Math.round((a.clientX-canvas_x_offset)*my_screen_width/canvas_w)-my_screen_x_offset;tmpmouseY=Math.round((a.clientY-canvas_y_offset)*my_screen_height/canvas_h)-my_screen_y_offset;tmpmouseX<my_drag.xlim[0]&&(tmpmouseX=my_drag.xlim[0]);tmpmouseX>
-my_drag.xlim[1]&&(tmpmouseX=my_drag.xlim[1]);tmpmouseY<my_drag.ylim[0]&&(tmpmouseY=my_drag.ylim[0]);tmpmouseY>my_drag.ylim[1]&&(tmpmouseY=my_drag.ylim[1]);my_drag.x=tmpmouseX;my_drag.y=tmpmouseY;my_relocate_existing_stimulus(my_drag.stimulus_copy,tmpmouseX,tmpmouseY);my_draw_all_db()}
-var my_readkeys={x:0,y:0,expect_keyboard:!1,lasttask:"",starttime:0,readkeytimer:"",rt:0,key:0,current_position:0,bitmap_number:[],status:0,entered:"",correct_word:"",keyupeventlistener:!1,keydowneventlistener:!1,start:function(a,b){my_readkeys.x=readkeys_option_show_x;my_readkeys.y=readkeys_option_show_y;my_readkeys.current_position=0;my_readkeys.entered="";if(1==readkeys_option_placeholders){if(0<=readkeys_option_placeholder_bitmap)for(p=0;p<readkeys_option_size;p++)my_add_centered_bitmap_db(readkeys_option_placeholder_bitmap,
-my_readkeys.x+50*p,my_readkeys.y,0);else if(-1==readkeys_option_placeholder_bitmap)for(p=0;p<readkeys_option_size;p++)my_add_centered_rectangle_rgb_db(my_readkeys.x+p*readkeys_option_spacing,my_readkeys.y,readkeys_option_placeholder_w,readkeys_option_placeholder_h,100,100,255);my_draw_all_db()}my_readkeys.rt=b;my_readkeys.starttime=(new Date).getTime();my_readkeys.lasttask=a;my_readkeys.readkeytimer=setTimeout("my_readkeys.timeout()",b);keystatus.status=3;keystatus.time=b},stop:function(){my_readkeys.entered==
-my_readkeys.correct_word&&(keystatus.status=1);my_readkeys.entered!=my_readkeys.correct_word&&(keystatus.status=2);clearTimeout(my_readkeys.readkeytimer);my_readkeys.expect_keyboard=!1;1==my_readkeys.keyupeventlistener&&(window.removeEventListener("keyup",readkeys_keyup,!1),my_readkeys.keyupeventlistener=!1);1==my_readkeys.keydowneventlistener&&(window.removeEventListener("keydown",readkeys_keydown,!1),my_readkeys.keydowneventlistener=!1);setTimeout(my_readkeys.lasttask+".run()",0)},timeout:function(){my_readkeys.expect_keyboard=
-!1;setTimeout(my_readkeys.lasttask+".run()",0)}},pager_options={back:0,backX:0,backY:0,next:0,nextX:0,nextY:0,quit:0,quitX:0,quitY:0},inkeypress=0;function getkeydown(a){inkeypress++;1==my_readkey.expect_keyboard&&1==inkeypress&&-1<my_readkey.keys.indexOf(a.keyCode)?(keystatus.time=(new Date).getTime()-my_readkey.starttime,keystatus.key=my_readkey.keys.indexOf(a.keyCode),keystatus.status=a.keyCode==my_readkey.expectedkey?1:2,my_readkey.expect_keyboard=!1,my_readkey.stop()):inkeypress=0}
-function getkeyup(a){1==inkeypress&&(keystatus.totaltime=(new Date).getTime()-my_readkey.starttime);inkeypress=0}
-function readkeys_keydown(a){inkeypress++;if(1==my_readkeys.expect_keyboard)switch(keystatus.time=(new Date).getTime()-my_readkeys.starttime,a.keyCode){case 8:a.preventDefault();0<my_readkeys.current_position&&(my_readkeys.current_position--,my_readkeys.entered=my_readkeys.entered.slice(0,my_readkeys.current_position),1==readkeys_option_show&&(my_clear_stimuli1(my_readkeys.bitmap_number[my_readkeys.current_position]),my_draw_all_db()));break;case 13:my_readkeys.expect_keyboard=!1;my_readkeys.stop();
-break;case 16:1==readkeys_option_show&&my_draw_all_db();break;case 17:1==readkeys_option_show&&my_draw_all_db();break;case 18:1==readkeys_option_show&&my_draw_all_db();break;case 20:1==readkeys_option_show&&my_draw_all_db();break;case 27:1==readkeys_option_show&&my_draw_alldb();break;case 46:1==readkeys_option_show&&my_draw_all_db();break;case 144:1==readkeys_option_show&&my_draw_all_db();break;default:my_readkeys.current_position<readkeys_option_size&&(tmpchar=a.key,1==tmpchar.length?my_readkeys.entered+=
-a.key:(my_readkeys.entered+="?",tmpchar="?"),1==readkeys_option_show&&(my_readkeys.bitmap_number[my_readkeys.current_position]=my_add_text_rgb_db(readkeys_option_font,my_readkeys.x+my_readkeys.current_position*readkeys_option_spacing,my_readkeys.y,MY_CENTRAL,MY_CENTRAL,readkeys_option_font_color[0],readkeys_option_font_color[1],readkeys_option_font_color[2],tmpchar,0),my_draw_all_db()),my_readkeys.current_position++)}else inkeypress=0}
-function readkeys_keyup(a){1==inkeypress&&13!=a.keyCode&&(keystatus.totaltime=(new Date).getTime()-my_readkeys.starttime);inkeypress=0}
-function getmouse_in_area(a){1==my_readkey.expect_mouse&&(canvas_x_offset=my_canvas.getBoundingClientRect().left,canvas_y_offset=my_canvas.getBoundingClientRect().top,canvas_w=my_canvas.getBoundingClientRect().width,canvas_h=my_canvas.getBoundingClientRect().height,tmpmouseX=Math.round((a.clientX-canvas_x_offset)*my_screen_width/canvas_w),tmpmouseY=Math.round((a.clientY-canvas_y_offset)*my_screen_height/canvas_h),tmpmouseX>=my_stimuli1[my_readkey.bitmap-1].rect.x&&tmpmouseX<=my_stimuli1[my_readkey.bitmap-
-1].rect.x+my_stimuli1[my_readkey.bitmap-1].rect.width&&tmpmouseY>=my_stimuli1[my_readkey.bitmap-1].rect.y&&tmpmouseY<=my_stimuli1[my_readkey.bitmap-1].rect.y+my_stimuli1[my_readkey.bitmap-1].rect.height&&(keystatus.time=(new Date).getTime()-my_readkey.starttime,keystatus.status=1,keystatus.mouse_x=tmpmouseX-my_screen_x_offset,keystatus.mouse_y=tmpmouseY-my_screen_y_offset,my_readkey.expect_mouse=!1,my_readkey.stop()))}
-function getmouse_in_area_check_all(a){if(1==my_readkey.expect_mouse){canvas_x_offset=my_canvas.getBoundingClientRect().left;canvas_y_offset=my_canvas.getBoundingClientRect().top;canvas_w=my_canvas.getBoundingClientRect().width;canvas_h=my_canvas.getBoundingClientRect().height;tmpmouseX=Math.round((a.clientX-canvas_x_offset)*my_screen_width/canvas_w);tmpmouseY=Math.round((a.clientY-canvas_y_offset)*my_screen_height/canvas_h);a=!1;var b=0,c=0,d=my_stimuli1_end-1;-1<my_readkey.bitmap_range[0]&&
-(c=my_readkey.bitmap_range[0]-1);for(-1<my_readkey.bitmap_range[1]&&(d=my_readkey.bitmap_range[1]-1);b<my_stimuli1_end&&0==a;)1==my_stimuli1[b].on&&b>=c&&b<=d&&tmpmouseX>=my_stimuli1[b].rect.x&&tmpmouseX<=my_stimuli1[b].rect.x+my_stimuli1[b].rect.width&&tmpmouseY>=my_stimuli1[b].rect.y&&tmpmouseY<=my_stimuli1[b].rect.y+my_stimuli1[b].rect.height&&(a=!0,keystatus.time=(new Date).getTime()-my_readkey.starttime,my_readkey.expect_mouse=!1,keystatus.mouse_x=tmpmouseX-my_screen_x_offset,keystatus.mouse_y=
-tmpmouseY-my_screen_y_offset,my_readkey.bitmap-1==b&&(keystatus.status=1),my_readkey.bitmap-1!=b&&(keystatus.status=2),my_readkey.stop()),b+=1}}
-function getmouseclick_in_area(a){if(1==my_readkey.expect_mouse&&-1==my_readkey.bitmap_range[1]){keystatus.time=(new Date).getTime()-my_readkey.starttime;canvas_x_offset=my_canvas.getBoundingClientRect().left;canvas_y_offset=my_canvas.getBoundingClientRect().top;canvas_w=my_canvas.getBoundingClientRect().width;canvas_h=my_canvas.getBoundingClientRect().height;tmpmouseX=Math.round((a.clientX-canvas_x_offset)*my_screen_width/canvas_w);tmpmouseY=Math.round((a.clientY-canvas_y_offset)*my_screen_height/
-canvas_h);var b=!1;tmpmouseX>=my_stimuli1[my_readkey.bitmap-1].rect.x&&tmpmouseX<=my_stimuli1[my_readkey.bitmap-1].rect.x+my_stimuli1[my_readkey.bitmap-1].rect.width&&tmpmouseY>=my_stimuli1[my_readkey.bitmap-1].rect.y&&tmpmouseY<=my_stimuli1[my_readkey.bitmap-1].rect.y+my_stimuli1[my_readkey.bitmap-1].rect.height?(b=!0,keystatus.bitmap=my_readkey.bitmap):keystatus.bitmap=my_bitmap_under_mouse(0,-1,-1,tmpmouseX-my_screen_x_offset,tmpmouseY-my_screen_y_offset);keystatus.status=my_readkey.expectedkey==
-a.button&&1==b?1:2;keystatus.mouse_x=tmpmouseX-my_screen_x_offset;keystatus.mouse_y=tmpmouseY-my_screen_y_offset;my_readkey.expect_mouse=!1;my_readkey.stop()}if(1==my_readkey.expect_mouse&&-1<my_readkey.bitmap_range[0]&&!my_readkey.array_search){keystatus.time=(new Date).getTime()-my_readkey.starttime;canvas_x_offset=my_canvas.getBoundingClientRect().left;canvas_y_offset=my_canvas.getBoundingClientRect().top;canvas_w=my_canvas.getBoundingClientRect().width;canvas_h=my_canvas.getBoundingClientRect().height;
-tmpmouseX=Math.round((a.clientX-canvas_x_offset)*my_screen_width/canvas_w);tmpmouseY=Math.round((a.clientY-canvas_y_offset)*my_screen_height/canvas_h);var c=my_bitmap_under_mouse(0,my_readkey.bitmap_range[0],my_readkey.bitmap_range[1],tmpmouseX-my_screen_x_offset,tmpmouseY-my_screen_y_offset);c>=my_readkey.bitmap_range[0]&&c<=my_readkey.bitmap_range[1]&&(b=!1,keystatus.bitmap=c,tmpmouseX>=my_stimuli1[my_readkey.bitmap-1].rect.x&&tmpmouseX<=my_stimuli1[my_readkey.bitmap-1].rect.x+my_stimuli1[my_readkey.bitmap-
-1].rect.width&&tmpmouseY>=my_stimuli1[my_readkey.bitmap-1].rect.y&&tmpmouseY<=my_stimuli1[my_readkey.bitmap-1].rect.y+my_stimuli1[my_readkey.bitmap-1].rect.height&&(b=!0),keystatus.status=my_readkey.expectedkey==a.button&&1==b?1:2,keystatus.mouse_x=tmpmouseX-my_screen_x_offset,keystatus.mouse_y=tmpmouseY-my_screen_y_offset,my_readkey.expect_mouse=!1,my_readkey.bitmap_range=[-1,-1],my_readkey.stop())}1==my_readkey.expect_mouse&&-1<my_readkey.bitmap_range[0]&&my_readkey.array_search&&
-(keystatus.time=(new Date).getTime()-my_readkey.starttime,canvas_x_offset=my_canvas.getBoundingClientRect().left,canvas_y_offset=my_canvas.getBoundingClientRect().top,canvas_w=my_canvas.getBoundingClientRect().width,canvas_h=my_canvas.getBoundingClientRect().height,tmpmouseX=Math.round((a.clientX-canvas_x_offset)*my_screen_width/canvas_w),tmpmouseY=Math.round((a.clientY-canvas_y_offset)*my_screen_height/canvas_h),c=my_bitmap_under_mouse_in_range(my_readkey.bitmap_range,tmpmouseX-my_screen_x_offset,
-tmpmouseY-my_screen_y_offset),0<c&&(b=!1,keystatus.bitmap=c,tmpmouseX>=my_stimuli1[my_readkey.bitmap-1].rect.x&&tmpmouseX<=my_stimuli1[my_readkey.bitmap-1].rect.x+my_stimuli1[my_readkey.bitmap-1].rect.width&&tmpmouseY>=my_stimuli1[my_readkey.bitmap-1].rect.y&&tmpmouseY<=my_stimuli1[my_readkey.bitmap-1].rect.y+my_stimuli1[my_readkey.bitmap-1].rect.height&&(b=!0),keystatus.status=my_readkey.expectedkey==a.button&&1==b?1:2,keystatus.mouse_x=tmpmouseX-my_screen_x_offset,keystatus.mouse_y=
-tmpmouseY-my_screen_y_offset,my_readkey.expect_mouse=!1,my_readkey.bitmap_range=[-1,-1],my_readkey.array_search=!1,my_readkey.stop()))}function my_mouse_in_bitmap_rectangle(a,b){my_readkey.bitmap=a;window.addEventListener("mousemove",getmouse_in_area,!1);my_readkey.mouseovereventlistener=1;my_expect_mouse();my_readkey.start(current_task,b)}
-function my_mouse_in_bitmap_rectangle_check_all(a,b,c,d){my_readkey.bitmap=a;my_readkey.bitmap_range[0]=c;my_readkey.bitmap_range[1]=d;window.addEventListener("mousemove",getmouse_in_area_check_all,!1);my_readkey.mouseovereventlistener=2;my_expect_mouse();my_readkey.start(current_task,b)}
-function my_mouse_click_bitmap_rectangle(a,b,c){my_readkey.bitmap=b;my_readkey.expectedkey="l"==a?0:1;window.addEventListener("mousedown",getmouseclick_in_area,!1);my_readkey.mousedowneventlistener=!0;my_expect_mouse();my_readkey.start(current_task,c)}
-function my_mouse_click_bitmap_rectangle_range(a,b,c,d,e){my_readkey.bitmap=b;my_readkey.expectedkey="l"==a?0:1;window.addEventListener("mousedown",getmouseclick_in_area,!1);my_readkey.mousedowneventlistener=!0;my_readkey.bitmap_range=[d,e];my_expect_mouse();my_readkey.start(current_task,c)}
-function my_mouse_click_bitmap_rectangle_array(a,b,c,d){my_readkey.bitmap=b;my_readkey.expectedkey="l"==a?0:1;window.addEventListener("mousedown",getmouseclick_in_area,!1);my_readkey.mousedowneventlistener=!0;my_readkey.bitmap_range=d;my_readkey.array_search=!0;my_expect_mouse();my_readkey.start(current_task,c)}
-function my_bitmap_under_mouse(a,b,c,d,e){var f=-1,g=1;var k=0;var l=my_stimuli1_n;-1<b&&(k=b-1);-1<c&&(l=c-1);0==a&&k>l&&(b=l,l=k,k=b);1==a&&k<l&&(b=l,l=k,k=b);for(;1==g&&-1==f;)d+my_screen_x_offset>=my_stimuli1[k].rect.x&&d+my_screen_x_offset<=my_stimuli1[k].rect.x+my_stimuli1[k].rect.width&&e+my_screen_y_offset>=my_stimuli1[k].rect.y&&e+my_screen_y_offset<=my_stimuli1[k].rect.y+my_stimuli1[k].rect.height&&(f=k),0==a&&-1==f&&(k>=l&&(g=0),k++),1==a&&-1==f&&(k<=l&&(g=0),k--);return f+
-1}function my_bitmap_under_mouse_in_range(a,b,c){for(var d=-1,e=0,f;e<a.length&&-1==d;)f=a[e]-1,b+my_screen_x_offset>=my_stimuli1[f].rect.x&&b+my_screen_x_offset<=my_stimuli1[f].rect.x+my_stimuli1[f].rect.width&&c+my_screen_y_offset>=my_stimuli1[f].rect.y&&c+my_screen_y_offset<=my_stimuli1[f].rect.y+my_stimuli1[f].rect.height&&(d=f),e<a.length&&-1==d&&e++;return d+1}
+1].y!=my_drag.stimulus_old_y)&&(my_drag.changed=1),keystatus.status=1);
+    0 < my_drag.stimulus && 1 != keystatus.status && (my_stimuli1[my_drag.stimulus-1].x!=my_drag.stimulus_old_x||my_stimuli1[my_drag.stimulus-1].y==my_drag.stimulus_old_y)&&(my_drag.changed=1,my_relocate_existing_stimulus(my_drag.stimulus,my_drag.stimulus_old_x,my_drag.stimulus_old_y),my_draw_all_db());
+    my_drag.dragging ? setTimeout(my_drag.run_dragging,0):setTimeout(my_drag.lasttask+".run()",0)
+}
+
+function getmousemovedrag(a){
+    canvas_x_offset=my_canvas.getBoundingClientRect().left;
+    canvas_y_offset=my_canvas.getBoundingClientRect().top;
+    canvas_w = my_canvas.getBoundingClientRect().width;
+    canvas_h = my_canvas.getBoundingClientRect().height;
+    tmpmouseX = Math.round((a.clientX-canvas_x_offset)*my_screen_width/canvas_w)-my_screen_x_offset;
+    tmpmouseY = Math.round((a.clientY-canvas_y_offset)*my_screen_height/canvas_h)-my_screen_y_offset;
+    tmpmouseX < my_drag.xlim[0] && (tmpmouseX=my_drag.xlim[0]);
+    tmpmouseX > my_drag.xlim[1] && (tmpmouseX=my_drag.xlim[1]);
+    tmpmouseY < my_drag.ylim[0] && (tmpmouseY=my_drag.ylim[0]);
+    tmpmouseY > my_drag.ylim[1] && (tmpmouseY=my_drag.ylim[1]);
+    my_drag.x = tmpmouseX;
+    my_drag.y = tmpmouseY;
+    my_relocate_existing_stimulus(my_drag.stimulus_copy,tmpmouseX,tmpmouseY);
+    my_draw_all_db()
+}
+
+var my_readkeys = {x:0,y:0,expect_keyboard:!1,lasttask:"",starttime:0,readkeytimer:"",rt:0,key:0,current_position:0,bitmap_number:[],status:0,entered:"",correct_word:"",keyupeventlistener:!1,keydowneventlistener:!1,start:function(a,b){
+    my_readkeys.x = readkeys_option_show_x;
+    my_readkeys.y=readkeys_option_show_y;
+    my_readkeys.current_position=0;
+    my_readkeys.entered = "";
+    if (1 == readkeys_option_placeholders){
+        if(0 <= readkeys_option_placeholder_bitmap)
+            for(p=0;p<readkeys_option_size;p++)
+                my_add_centered_bitmap_db(readkeys_option_placeholder_bitmap, my_readkeys.x+50*p,my_readkeys.y,0);
+        
+        else if(-1==readkeys_option_placeholder_bitmap)
+            for(p=0;p<readkeys_option_size;p++)
+                my_add_centered_rectangle_rgb_db(my_readkeys.x+p*readkeys_option_spacing,my_readkeys.y,readkeys_option_placeholder_w,readkeys_option_placeholder_h,100,100,255);
+        my_draw_all_db()
+    }
+    
+    my_readkeys.rt=b;
+    my_readkeys.starttime=(new Date).getTime();
+    my_readkeys.lasttask=a;
+    my_readkeys.readkeytimer=setTimeout("my_readkeys.timeout()",b);
+    keystatus.status=3;
+    keystatus.time=b
+},stop:function(){
+    my_readkeys.entered == my_readkeys.correct_word && (keystatus.status=1);
+    my_readkeys.entered != my_readkeys.correct_word && (keystatus.status=2);
+    clearTimeout(my_readkeys.readkeytimer);
+    my_readkeys.expect_keyboard =! 1;
+    1 == my_readkeys.keyupeventlistener && (window.removeEventListener("keyup",readkeys_keyup,!1),my_readkeys.keyupeventlistener=!1);
+    1 == my_readkeys.keydowneventlistener && (window.removeEventListener("keydown",readkeys_keydown,!1),my_readkeys.keydowneventlistener=!1);
+    setTimeout(my_readkeys.lasttask+".run()",0)
+},timeout:function(){
+    my_readkeys.expect_keyboard =! 1;
+    setTimeout(my_readkeys.lasttask + ".run()",0)
+}
+},
+pager_options={back:0,backX:0,backY:0,next:0,nextX:0,nextY:0,quit:0,quitX:0,quitY:0},
+inkeypress=0;
+
+function getkeydown(a){
+    inkeypress++;
+    1 == my_readkey.expect_keyboard && 1 == inkeypress && -1 < my_readkey.keys.indexOf(a.keyCode) ? (keystatus.time=(new Date).getTime()-my_readkey.starttime,keystatus.key=my_readkey.keys.indexOf(a.keyCode),keystatus.status=a.keyCode == my_readkey.expectedkey ? 1 : 2,my_readkey.expect_keyboard =! 1,my_readkey.stop()):inkeypress=0
+}
+
+function getkeyup(a){ 1 == inkeypress && (keystatus.totaltime=(new Date).getTime()-my_readkey.starttime);inkeypress=0}
+
+function readkeys_keydown(a){
+    inkeypress++;
+    if(1 == my_readkeys.expect_keyboard)
+        switch(keystatus.time=(new Date).getTime()-my_readkeys.starttime,a.keyCode){
+            case 8:     a.preventDefault();
+                        0 < my_readkeys.current_position && (my_readkeys.current_position--,my_readkeys.entered=my_readkeys.entered.slice(0,my_readkeys.current_position),1 == readkeys_option_show && (my_clear_stimuli1(my_readkeys.bitmap_number[my_readkeys.current_position]),my_draw_all_db()));
+                        break;
+            case 13:    my_readkeys.expect_keyboard=!1;
+                        my_readkeys.stop();
+                        break;
+            case 16:    1 == readkeys_option_show && my_draw_all_db();
+                        break;
+            case 17:    1 == readkeys_option_show && my_draw_all_db();
+                        break;
+            case 18:    1 == readkeys_option_show && my_draw_all_db();
+                        break;
+            case 20:    1 == readkeys_option_show && my_draw_all_db();
+                        break;
+            case 27:    1 == readkeys_option_show && my_draw_alldb();
+                        break;
+            case 46:    1 == readkeys_option_show && my_draw_all_db();
+                        break;
+            case 144:   1 == readkeys_option_show && my_draw_all_db();
+                        break;
+            default:    my_readkeys.current_position < readkeys_option_size && (tmpchar=a.key,1==tmpchar.length?my_readkeys.entered+=
+                        a.key:(my_readkeys.entered+="?",tmpchar="?"),1==readkeys_option_show&&(my_readkeys.bitmap_number[my_readkeys.current_position]=my_add_text_rgb_db(readkeys_option_font,my_readkeys.x+my_readkeys.current_position*readkeys_option_spacing,my_readkeys.y,MY_CENTRAL,MY_CENTRAL,readkeys_option_font_color[0],readkeys_option_font_color[1],readkeys_option_font_color[2],tmpchar,0),my_draw_all_db()),my_readkeys.current_position++)
+        }
+    else inkeypress=0
+}
+
+function readkeys_keyup(a){
+    1 == inkeypress && 13 != a.keyCode && (keystatus.totaltime=(new Date).getTime()-my_readkeys.starttime);
+    inkeypress=0
+}
+
+function getmouse_in_area(a){
+    1 == my_readkey.expect_mouse && (canvas_x_offset=my_canvas.getBoundingClientRect().left,canvas_y_offset=my_canvas.getBoundingClientRect().top,canvas_w=my_canvas.getBoundingClientRect().width,canvas_h=my_canvas.getBoundingClientRect().height,tmpmouseX=Math.round((a.clientX-canvas_x_offset)*my_screen_width/canvas_w),tmpmouseY=Math.round((a.clientY-canvas_y_offset)*my_screen_height/canvas_h),tmpmouseX>=my_stimuli1[my_readkey.bitmap-1].rect.x&&tmpmouseX<=my_stimuli1[my_readkey.bitmap-1].rect.x+my_stimuli1[my_readkey.bitmap-1].rect.width&&tmpmouseY>=my_stimuli1[my_readkey.bitmap-1].rect.y&&tmpmouseY<=my_stimuli1[my_readkey.bitmap-1].rect.y+my_stimuli1[my_readkey.bitmap-1].rect.height&&(keystatus.time=(new Date).getTime()-my_readkey.starttime,keystatus.status=1,keystatus.mouse_x=tmpmouseX-my_screen_x_offset,keystatus.mouse_y=tmpmouseY-my_screen_y_offset,my_readkey.expect_mouse=!1,my_readkey.stop()))
+}
+
+function getmouse_in_area_check_all(a){
+    if(1 == my_readkey.expect_mouse){
+        canvas_x_offset = my_canvas.getBoundingClientRect().left;
+        canvas_y_offset = my_canvas.getBoundingClientRect().top;
+        canvas_w = my_canvas.getBoundingClientRect().width;
+        canvas_h = my_canvas.getBoundingClientRect().height;
+        tmpmouseX = Math.round((a.clientX-canvas_x_offset) * my_screen_width/canvas_w);
+        tmpmouseY = Math.round((a.clientY-canvas_y_offset) * my_screen_height/canvas_h);
+        a=!1;
+        var b = 0,c = 0, d = my_stimuli1_end - 1;
+        -1 < my_readkey.bitmap_range[0] && (c=my_readkey.bitmap_range[0]-1);
+        for(-1<my_readkey.bitmap_range[1] && (d=my_readkey.bitmap_range[1]-1);b<my_stimuli1_end&&0==a;)
+            1 == my_stimuli1[b].on && b >= c && b <= d && tmpmouseX >= my_stimuli1[b].rect.x && tmpmouseX <= my_stimuli1[b].rect.x + my_stimuli1[b].rect.width&&tmpmouseY>=my_stimuli1[b].rect.y&&tmpmouseY<=my_stimuli1[b].rect.y+my_stimuli1[b].rect.height&&(a=!0,keystatus.time=(new Date).getTime()-my_readkey.starttime,my_readkey.expect_mouse=!1,keystatus.mouse_x=tmpmouseX-my_screen_x_offset,keystatus.mouse_y=tmpmouseY-my_screen_y_offset,my_readkey.bitmap-1==b&&(keystatus.status=1),my_readkey.bitmap-1!=b&&(keystatus.status=2),my_readkey.stop()),b+=1
+    }
+}
+
+
+function getmouseclick_in_area(a){
+    if(1 == my_readkey.expect_mouse && -1 == my_readkey.bitmap_range[1]){
+        keystatus.time=(new Date).getTime()-my_readkey.starttime;
+        canvas_x_offset = my_canvas.getBoundingClientRect().left;
+        canvas_y_offset = my_canvas.getBoundingClientRect().top;
+        canvas_w = my_canvas.getBoundingClientRect().width;
+        canvas_h = my_canvas.getBoundingClientRect().height;
+        tmpmouseX = Math.round((a.clientX-canvas_x_offset) * my_screen_width/canvas_w);
+        tmpmouseY = Math.round((a.clientY-canvas_y_offset) * my_screen_height/canvas_h);
+        var b =! 1;
+        tmpmouseX >= my_stimuli1[my_readkey.bitmap-1].rect.x && tmpmouseX <= my_stimuli1[my_readkey.bitmap-1].rect.x+my_stimuli1[my_readkey.bitmap-1].rect.width&&tmpmouseY>=my_stimuli1[my_readkey.bitmap-1].rect.y&&tmpmouseY<=my_stimuli1[my_readkey.bitmap-1].rect.y+my_stimuli1[my_readkey.bitmap-1].rect.height?(b=!0,keystatus.bitmap=my_readkey.bitmap):keystatus.bitmap=my_bitmap_under_mouse(0,-1,-1,tmpmouseX-my_screen_x_offset,tmpmouseY-my_screen_y_offset);
+        
+        keystatus.status=my_readkey.expectedkey == a.button && 1 == b ? 1 : 2;
+        keystatus.mouse_x = tmpmouseX - my_screen_x_offset;
+        keystatus.mouse_y = tmpmouseY - my_screen_y_offset;
+        my_readkey.expect_mouse =! 1;
+        my_readkey.stop()
+    }
+    
+    if(1 == my_readkey.expect_mouse && -1 < my_readkey.bitmap_range[0] && !my_readkey.array_search){
+        keystatus.time=(new Date).getTime()-my_readkey.starttime;
+        canvas_x_offset = my_canvas.getBoundingClientRect().left;
+        canvas_y_offset = my_canvas.getBoundingClientRect().top;
+        canvas_w = my_canvas.getBoundingClientRect().width;
+        canvas_h = my_canvas.getBoundingClientRect().height;
+        tmpmouseX = Math.round((a.clientX-canvas_x_offset) * my_screen_width/canvas_w);
+        tmpmouseY = Math.round((a.clientY-canvas_y_offset) * my_screen_height/canvas_h);
+        var c = my_bitmap_under_mouse(0,my_readkey.bitmap_range[0],my_readkey.bitmap_range[1],tmpmouseX-my_screen_x_offset,tmpmouseY-my_screen_y_offset);c>=my_readkey.bitmap_range[0]&&c<=my_readkey.bitmap_range[1]&&(b=!1,keystatus.bitmap=c,tmpmouseX>=my_stimuli1[my_readkey.bitmap-1].rect.x&&tmpmouseX<=my_stimuli1[my_readkey.bitmap-1].rect.x+my_stimuli1[my_readkey.bitmap-1].rect.width&&tmpmouseY>=my_stimuli1[my_readkey.bitmap-1].rect.y&&tmpmouseY<=my_stimuli1[my_readkey.bitmap-1].rect.y+my_stimuli1[my_readkey.bitmap-1].rect.height&&(b=!0),keystatus.status=my_readkey.expectedkey==a.button&&1==b?1:2,keystatus.mouse_x=tmpmouseX-my_screen_x_offset,keystatus.mouse_y=tmpmouseY-my_screen_y_offset,my_readkey.expect_mouse=!1,my_readkey.bitmap_range=[-1,-1],my_readkey.stop())
+    }
+    
+    1 == my_readkey.expect_mouse && -1 < my_readkey.bitmap_range[0] && my_readkey.array_search && (keystatus.time=(new Date).getTime()-my_readkey.starttime,canvas_x_offset=my_canvas.getBoundingClientRect().left,canvas_y_offset=my_canvas.getBoundingClientRect().top,canvas_w=my_canvas.getBoundingClientRect().width,canvas_h=my_canvas.getBoundingClientRect().height,tmpmouseX=Math.round((a.clientX-canvas_x_offset)*my_screen_width/canvas_w),tmpmouseY=Math.round((a.clientY-canvas_y_offset)*my_screen_height/canvas_h),c=my_bitmap_under_mouse_in_range(my_readkey.bitmap_range,tmpmouseX-my_screen_x_offset,tmpmouseY-my_screen_y_offset),0<c&&(b=!1,keystatus.bitmap=c,tmpmouseX>=my_stimuli1[my_readkey.bitmap-1].rect.x&&tmpmouseX<=my_stimuli1[my_readkey.bitmap-1].rect.x+my_stimuli1[my_readkey.bitmap-1].rect.width&&tmpmouseY>=my_stimuli1[my_readkey.bitmap-1].rect.y&&tmpmouseY<=my_stimuli1[my_readkey.bitmap-1].rect.y+my_stimuli1[my_readkey.bitmap-1].rect.height&&(b=!0),keystatus.status=my_readkey.expectedkey==a.button&&1==b?1:2,keystatus.mouse_x=tmpmouseX-my_screen_x_offset,keystatus.mouse_y=tmpmouseY-my_screen_y_offset,my_readkey.expect_mouse=!1,my_readkey.bitmap_range=[-1,-1],my_readkey.array_search=!1,my_readkey.stop()))
+}
+
+function my_mouse_in_bitmap_rectangle(a,b){
+    my_readkey.bitmap=a;
+    window.addEventListener("mousemove",getmouse_in_area,!1);
+    my_readkey.mouseovereventlistener=1;
+    my_expect_mouse();
+    my_readkey.start(current_task,b)
+}
+
+function my_mouse_in_bitmap_rectangle_check_all(a,b,c,d){
+    my_readkey.bitmap=a;
+    my_readkey.bitmap_range[0]=c;
+    my_readkey.bitmap_range[1]=d;
+    window.addEventListener("mousemove",getmouse_in_area_check_all,!1);
+    my_readkey.mouseovereventlistener=2;
+    my_expect_mouse();
+    my_readkey.start(current_task,b)
+}
+
+function my_mouse_click_bitmap_rectangle(a,b,c){
+    my_readkey.bitmap=b;
+    my_readkey.expectedkey="l" == a ? 0 : 1;
+    window.addEventListener("mousedown",getmouseclick_in_area,!1);
+    my_readkey.mousedowneventlistener =! 0;
+    my_expect_mouse();
+    my_readkey.start(current_task,c)
+}
+
+function my_mouse_click_bitmap_rectangle_range(a,b,c,d,e){
+    my_readkey.bitmap = b;
+    my_readkey.expectedkey = "l" == a ? 0 : 1;
+    window.addEventListener("mousedown",getmouseclick_in_area,!1);
+    my_readkey.mousedowneventlistener =! 0;
+    my_readkey.bitmap_range=[d,e];
+    my_expect_mouse();
+    my_readkey.start(current_task,c)
+}
+
+
+function my_mouse_click_bitmap_rectangle_array(a,b,c,d){
+    my_readkey.bitmap=b;
+    my_readkey.expectedkey = "l" == a ? 0 : 1;
+    window.addEventListener("mousedown",getmouseclick_in_area,!1);
+    my_readkey.mousedowneventlistener =! 0;
+    my_readkey.bitmap_range=d;
+    my_readkey.array_search=!0;
+    my_expect_mouse();
+    my_readkey.start(current_task,c)
+}
+
+function my_bitmap_under_mouse(a,b,c,d,e){
+    var f = -1, g = 1;
+    var k = 0;
+    var l = my_stimuli1_n;
+    -1 < b && (k = b - 1);
+    -1 < c && (l = c - 1);
+    0 == a && k > l && (b = l, l = k, k = b);
+    1 == a && k < l && (b = l, l = k, k = b);
+    for(;1==g&&-1==f;)
+        d + my_screen_x_offset >= my_stimuli1[k].rect.x && d + my_screen_x_offset <= my_stimuli1[k].rect.x + my_stimuli1[k].rect.width && e + my_screen_y_offset >= my_stimuli1[k].rect.y && e + my_screen_y_offset <= my_stimuli1[k].rect.y + my_stimuli1[k].rect.height && (f=k), 0 == a && -1 == f && (k >= l && (g=0), k++), 1 == a && -1 == f && (k <= l && (g=0), k--);
+    return f+1
+}
+
+function my_bitmap_under_mouse_in_range(a,b,c){
+    for(var d=-1,e=0,f;e<a.length&&-1==d;)
+    f = a[e]-1, b+my_screen_x_offset >= my_stimuli1[f].rect.x && b+my_screen_x_offset<=my_stimuli1[f].rect.x+my_stimuli1[f].rect.width&&c+my_screen_y_offset>=my_stimuli1[f].rect.y&&c+my_screen_y_offset<=my_stimuli1[f].rect.y+my_stimuli1[f].rect.height&&(d=f),e<a.length&&-1==d&&e++;
+    return d+1
+}
+
 function my_wait(a,b){Number.isFinite(a)?0!=a&&(my_clear_stimulus_counters_db(),my_add_centered_bitmap_db(a,MY_CENTRAL,MY_CENTRAL,0),my_draw_all_db()):(my_clear_stimulus_counters_db(),my_add_text_rgb_db(1,MY_CENTRAL,MY_CENTRAL,MY_CENTRAL,MY_CENTRAL,255,255,255,a,0),my_draw_all_db());0<=b?(my_readkey.expectedkey=b,my_readkey.keys=[b],my_expect_keyboard()):(my_mouse_visibility(1),my_readkey.bitmap=1,my_readkey.expectedkey=0,window.addEventListener("mousedown",getmouseclick_in_area,
 !1),my_readkey.mousedowneventlistener=!0,my_expect_mouse(),my_mouse_click_bitmap_rectangle("l",1,9999999));my_readkey.start(current_block,99999999)}
 var my_pager={original_block:"",current_bitmap_in_pager:0,bitmaps:[],n:0,start:function(a){my_pager.original_block=current_block;my_pager.n=a.length;my_pager.bitmaps=a;current_block="my_pager";my_pager.current_bitmap_in_pager=0;keystatus.key=-1;my_pager.run()},run:function(){(0==keystatus.key||1==keystatus.key)&&my_pager.current_bitmap_in_pager<my_pager.n-1&&my_pager.current_bitmap_in_pager++;2==keystatus.key&&0<my_pager.current_bitmap_in_pager&&my_pager.current_bitmap_in_pager--;3==keystatus.key?
