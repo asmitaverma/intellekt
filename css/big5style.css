@@ -87,3 +87,10 @@
 	margin-bottom: 40px;
 	margin-top: 40px;
 }
+
+.mybutton{
+    background-color:#fff;color:#00f;padding:5px;font-size:120%;border:5px solid #00f;cursor:pointer;border-radius:15px
+}
+.mybutton:disabled,.mybutton[disabled]{
+    background-color:#fff;color:grey;padding:5px;font-size:120%;border:5px solid grey;cursor:pointer;border-radius:15px
+}
