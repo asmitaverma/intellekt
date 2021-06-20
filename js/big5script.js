@@ -403,7 +403,7 @@ createValueButtons();
     // Calculation will sum all of the answers to the prompts using weight of the value * the weight of the prompt.
 var total = 0;
 
-var extra1 = 0, agree2 = 0, consc3 = 0, stabl4 = 0, imagin5 = 0;
+//extra0, agree1, consc2, stabl3, imagin4;
 var scores = [0, 0, 0, 0, 0];
     
     // Get the weight associated to group number
@@ -465,16 +465,9 @@ $('.value-btn').mousedown(function () {
         
 $('#submit-btn').click(function () {
     localStorage.clear();
-    localStorage.setItem("global_array", JSON.stringify(scores));
-    var x = localStorage.getItem("global_array");
+    localStorage.setItem("big5_scores", JSON.stringify(scores));
+    var x = localStorage.getItem("big5_scores");
     console.log(x);
 })
-    
-$('#retake-btn').click(function () {
-    $('#quiz').removeClass('hide');
-    $('#submit-btn').removeClass('hide');
-    $('#retake-btn').addClass('hide');
-    
-    $('.results').addClass('hide');
-    $('.results').removeClass('show');
-})
+
+// "[23, 34, 12, 89, 4], 8, 3, 4"
