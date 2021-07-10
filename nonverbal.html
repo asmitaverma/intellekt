@@ -72,8 +72,6 @@
   ==================================== -->
 
 
-  
-
 <!--
 Fixed Navigation
 ==================================== -->
@@ -131,7 +129,7 @@ End Fixed Navigation
         </ul>
       </div>
     
-      <form name="mainform" autocomplete="off" method="post" onsubmit="codechanged=false;tmps=document.mainform;tmps.height.value=screen.height;tmps.width.value=screen.width;tmps.datetime.value=new Date().toUTCString();tmps.rt.value=new Date().getTime() - ScreenStartTime;tmps.datafile.value=outputdata;">
+      <form name="mainform" autocomplete="off" method="post" onsubmit="codechanged=false; tmps=document.mainform; tmps.height.value=screen.height;tmps.width.value=screen.width;tmps.datetime.value=new Date().toUTCString();tmps.rt.value=new Date().getTime() - ScreenStartTime;tmps.datafile.value=outputdata;">
         <input type="hidden" name="height" value="0">
         <input type="hidden" name="width" value="0">
         <input type="hidden" name="hh" value="0">
@@ -1196,7 +1194,7 @@ End Fixed Navigation
     <br><br><br>
     <script>
         var checkscalequestions10=[10];
-        function checkscale10(i){
+        function checkscale10(i) {
             checkscalequestions10[i]=1;
             var tmp; 
             var tmpsum=0;
@@ -1876,13 +1874,17 @@ End Fixed Navigation
                         var distance = 540000 - (now - ScreenStartTime);
                         var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                        document.getElementById('continuebutton').value = minutes + ':' + (seconds<10?'0':'') + seconds ;if (distance < 0) {clearInterval(intervaltimer);
+                        document.getElementById('continuebutton').value = minutes + ':' + (seconds<10?'0':'') + seconds ;
+                        if (distance < 0) {clearInterval(intervaltimer);
                         document.getElementById('continuebutton').value = '...';}},1000);
             </script>
             <script>
                 setTimeout('codechanged=false;tmps=document.mainform;tmps.height.value=screen.height;tmps.width.value=screen.width;tmps.datetime.value=new Date().toUTCString();tmps.rt.value=new Date().getTime()-ScreenStartTime;tmps.submit()', 540000)
             </script>
             <input type="submit" value="8:40" id="continuebutton" class="mybutton" disabled="">
+            <!-- <div class="container text-center bottom">
+                <button id = "submit-btn" class = "btn btn-primary btn-lg" onclick="window.location.href = 'nback2.html';">Submit</button>
+            </div> -->
             <br>
         </div>
     </form>
