@@ -1,74 +1,73 @@
-// questions taken from IPIP inventory
 var prompts = [
     {
         prompt: 1,
         weight: 1,
         class: 'group0',
         trait: 0,
-        ans: 'a'
+        ans: 'c'
     },
     {
         prompt: 2,
         weight: 1,
         class: 'group1',
         trait: 0,
-        ans: 'a'
+        ans: 'e'
     },
     {
         prompt: 3,
         weight: 1,
         class: 'group2',
         trait: 0,
-        ans: 'a'
+        ans: 'e'
     },
     {
         prompt: 4,
         weight: 1,
         class: 'group3',
         trait: 0,
-        ans: 'a'
+        ans: 'd'
     },
     {
         prompt: 5,
         weight: 1,
         class: 'group4',
         trait: 0,
-        ans: 'a'
+        ans: 'e'
     },
     {
         prompt: 6,
         weight: -1,
         class: 'group5',
         trait: 0,
-        ans: 'a'
+        ans: 'e'
     },
     {
         prompt: 7,
         weight: -1,
         class: 'group6',
         trait: 0,
-        ans: 'a'
+        ans: 'c'
     },
     {
         prompt: 8,
         weight: -1,
         class: 'group7',
         trait: 0,
-        ans: 'a'
+        ans: 'e'
     },
     {
         prompt: 9,
         weight: -1,
         class: 'group8',
         trait: 0,
-        ans: 'a'
+        ans: 'c'
     },
     {
         prompt: 10,
         weight: -1,
         class: 'group9',
         trait: 0,
-        ans: 'a'
+        ans: 'e'
     }     
 ]
 
@@ -110,11 +109,11 @@ function createPromptItems() {
     for (var i = 0; i < prompts.length; i++) {
         var prompt_li = document.createElement('li');
         var img_url = "images/nonverb/" + prompts[i].prompt.toString() + ".png";
-        var prompt_p = document.createElement('img');
-        prompt_p.src = img_url;
+        var prompt_img = document.createElement('img');
+        prompt_img.src = img_url;
         
         prompt_li.setAttribute('class', 'list-group-item prompt');
-        prompt_li.appendChild(prompt_p);
+        prompt_li.appendChild(prompt_img);
     
         document.getElementById('quiz').appendChild(prompt_li);
     }
@@ -145,7 +144,7 @@ function createValueButtons() {
 createPromptItems();
 createValueButtons();
     
-    // Keep a running total of the values they have selected. 
+    // Keep a running total of the values user has selected. 
     // Calculation will sum all of the answers 
 var total = 0;
 
