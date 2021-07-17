@@ -1,0 +1,20 @@
+
+.container {
+    width: 100%;
+    display: inline-block;
+    padding-bottom: 30px; /* Full width */
+ /* Grey background */
+}
+  
+  .skills {
+    text-align: right; /* Right-align text */
+    padding-top: 10px; /* Add top padding */
+    padding-bottom: 10px; /* Add bottom padding */
+    color: white; /* White text color */
+  }
+  
+  .open {text-align: center;float:inline-end; background-color: #003f5c;} /* Green */
+  .conscience {text-align: center; background-color: #58508d;} /* Blue */
+  .extra {text-align: center; background-color: #bc5090;} /* Red */
+  .agree {text-align: center; background-color: #ff6361;}
+  .neuro {text-align: center; background-color: #ffa600;} /* Dark Grey */
