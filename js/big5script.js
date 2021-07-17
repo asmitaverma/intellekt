@@ -404,6 +404,7 @@ createValueButtons();
 var total = 0;
 
 //extra0, agree1, consc2, stabl3, imagin4;
+//maximum score = [50, 50, 50, 50, 50]
 var scores = [0, 0, 0, 0, 0];
     
     // Get the weight associated to group number

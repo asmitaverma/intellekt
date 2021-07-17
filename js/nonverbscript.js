@@ -180,7 +180,7 @@ $('.value-btn').mousedown(function () {
     var this_group = classArr[0];           //question number group0, group1, group2, ..., group9
         // console.log(this_group);
     var this_value = classArr[6];           //button value 1,2,3,4,5
-    console.log(this_value);
+    // console.log(this_value);
     
         // If button is already selected, de-select it when clicked and subtract any previously added values to the total
         // Otherwise, de-select any selected buttons in group and select the one just clicked
@@ -200,7 +200,6 @@ $('.value-btn').mousedown(function () {
 })
         
 $('#submit-btn').click(function () {
-    localStorage.clear();
     localStorage.setItem("nonverb_score", JSON.stringify(total));
     var x = localStorage.getItem("nonverb_score");
     console.log(x);
