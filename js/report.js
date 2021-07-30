@@ -8,16 +8,25 @@ var conscience = parseInt(big5array[1]);
 var extra = parseInt(big5array[2]);
 var agree = parseInt(big5array[3]);
 var neuro = parseInt(big5array[4]);
+var nbak = parseInt(localStorage.getItem("nback_score"));
+var s_score = parseInt(localStorage.getItem("simon_score"));
+var nonverb_score = parseInt(localStorage.getItem("nonverb_score"));
+var cluster = localStorage.getItem("cluster");
 
-document.addEventListener("DOMContentLoaded", () => { scoresload(openn, conscience, extra, agree, neuro); });
+document.addEventListener("DOMContentLoaded", () => { scoresload(openn, conscience, extra, agree, neuro, nbak, s_score, nonverb_score, cluster); });
 
 
-function scoresload(o,c,e,a,n){
+function scoresload(o,c,e,a,n,nbak,s_score, nonverb_score, cluster){
     document.getElementById("open").innerHTML = o;
     document.getElementById("cons").innerHTML = c;
     document.getElementById("extra").innerHTML = e;
     document.getElementById("agree").innerHTML = a;
     document.getElementById("neuro").innerHTML = n;
+    document.getElementById("nback").innerHTML = nbak;
+    document.getElementById("simon_task").innerHTML = s_score;
+    document.getElementById("nonverb_score").innerHTML = nonverb_score;
+    document.getElementById("cluster").innerHTML = cluster;
+
     var pero = (o/50)*100;
     var perc = (c/50)*100;
     var pere = (e/50)*100;

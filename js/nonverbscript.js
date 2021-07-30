@@ -201,8 +201,23 @@ $('.value-btn').mousedown(function () {
         
 $('#submit-btn').click(function () {
     localStorage.setItem("nonverb_score", JSON.stringify(total));
-    var x = localStorage.getItem("nonverb_score");
-    console.log(x);
+    var d1 = localStorage.getItem("nonverb_score");
+    var d2 = localStorage.getItem("simon_score");
+    var d3 = localStorage.getItem("nback_score");
+    var d4 = localStorage.getItem("commission");
+    var dist1 = (2.2691 - d1)**2 + (-187.042 - d2)**2 + (2.62087 - d3)**2 + (1.6908 - d4)**2;
+    var dist2 = (4.1793 - d1)**2 + (84.89 - d2)**2 + (7.3744 - d3)**2 + (3.712 - d4)**2;
+    var str1 = "High";
+    var str2 = "Low";
+
+    
+    if (dist1>dist2){
+        localStorage.setItem("cluster", str1);
+    }else{
+        localStorage.setItem("cluster", str2);
+    }
+
+    console.log(d1);
 })
 
 // "[23, 34, 12, 89, 4], 8, 3, 4"

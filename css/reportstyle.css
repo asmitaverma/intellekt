@@ -26,4 +26,9 @@
   .conscience {text-align: center; background-color: #58508d;} /* Blue */
   .extra {text-align: center; background-color: #bc5090;} /* Red */
   .agree {text-align: center; background-color: #ff6361;}
-  .neuro {text-align: center; background-color: #ffa600;} /* Dark Grey */
+  .neuro {text-align: center; background-color: #ffa600;}
+  .nback {text-align: center; background-color: #ee7879;}
+  .simon {text-align: center; background-color: #cae7df;}
+  .nonverb {text-align: center; background-color: #3778c2;}
+  .cluster {text-align: center; background-color: #6ab187;}
+   /* Dark Grey */
